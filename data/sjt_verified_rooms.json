@@ -1,0 +1,162 @@
+{
+  "status": "VERIFIED ROOM IDENTITIES ONLY -- no corridor geometry, coordinates or adjacency has been surveyed. Do not treat x/y as real; they are intentionally null.",
+  "sources": [
+    {
+      "title": "Silver Jubilee Tower - VIT Vellore official infrastructure page",
+      "url": "https://vit.ac.in/about/infrastructure/silver-jubilee-tower",
+      "accessed": "2026-10-25",
+      "covers": "Ground through Eighth floor room/lab tables, with room numbers and areas for some rooms"
+    },
+    {
+      "title": "Administrative Offices - VIT Vellore official page",
+      "url": "https://vit.ac.in/?p=3342",
+      "accessed": "2026-10-25",
+      "covers": "Confirms Academics Office at Room 820, SJT (independent corroboration of the eighth-floor table)"
+    }
+  ],
+  "building": {
+    "id": "SJT",
+    "name": "Silver Jubilee Tower, VIT Vellore",
+    "note": "Room identities below are verified from the official VIT page cited in 'sources'. Geometry (x, y, corridors, entrances, stairs, lifts) is NOT verified and must come from a site survey or VIT-supplied drawings -- see the accompanying research report, Part 3 and Part 6."
+  },
+  "floors": [
+    {
+      "level": 0, "name": "Ground Floor",
+      "entrance": { "id": "ENTRANCE_G", "x": null, "y": null },
+      "stairs": [{ "id": "STAIRS_G", "x": null, "y": null }],
+      "lift": [{ "id": "LIFT_G", "x": null, "y": null }],
+      "rooms": [
+        { "id": "G07", "name": "Smart Classroom", "category": "Classroom", "area_sqft": 1734, "x": null, "y": null },
+        { "id": "G13", "name": "Canteen (Arasan)", "category": "Shop / Facility", "area_sqft": 7620, "x": null, "y": null },
+        { "id": "G17", "name": "Software Development & Management Lab", "category": "Laboratory", "x": null, "y": null },
+        { "id": "G18", "name": "Embedded Systems & IoT Lab", "category": "Laboratory", "x": null, "y": null },
+        { "id": "G18A", "name": "Image Processing Lab", "category": "Laboratory", "x": null, "y": null },
+        { "id": "G19", "name": "Mobile Application Development Lab", "category": "Laboratory", "x": null, "y": null },
+        { "id": "G19A", "name": "Automation Lab", "category": "Laboratory", "x": null, "y": null },
+        { "id": "G20", "name": "Data Science Lab", "category": "Laboratory", "x": null, "y": null },
+        { "id": "G22", "name": "Dean's Office", "category": "Office", "x": null, "y": null }
+      ],
+      "corridors": "not surveyed"
+    },
+    {
+      "level": 1, "name": "First Floor",
+      "entrance": null,
+      "stairs": [{ "id": "STAIRS_1", "x": null, "y": null }],
+      "lift": [{ "id": "LIFT_1", "x": null, "y": null }],
+      "rooms": [
+        { "id": "102", "name": "Chemistry Lab (SAS)", "category": "Laboratory", "area_sqft": 4841.97, "x": null, "y": null },
+        { "id": "107", "name": "Smart Classroom", "category": "Classroom", "area_sqft": 1716, "x": null, "y": null },
+        { "id": "108", "name": "Smart Classroom", "category": "Classroom", "area_sqft": 1716, "x": null, "y": null },
+        { "id": "119", "name": "Programming Languages Lab", "category": "Laboratory", "x": null, "y": null },
+        { "id": "120", "name": "Machine Learning Lab", "category": "Laboratory", "x": null, "y": null },
+        { "id": "121", "name": "Operating Systems Lab", "category": "Laboratory", "x": null, "y": null },
+        { "id": "122", "name": "Software Testing & Verification Lab", "category": "Laboratory", "x": null, "y": null }
+      ],
+      "corridors": "not surveyed"
+    },
+    {
+      "level": 2, "name": "Second Floor",
+      "entrance": null,
+      "stairs": [{ "id": "STAIRS_2", "x": null, "y": null }],
+      "lift": [{ "id": "LIFT_2", "x": null, "y": null }],
+      "rooms": [
+        { "id": "203", "name": "Digital System Design Lab", "category": "Laboratory", "x": null, "y": null },
+        { "id": "207", "name": "Communication Engineering & Analog Circuits Lab", "category": "Laboratory", "x": null, "y": null },
+        { "id": "212", "name": "Embedded Systems & IoT Lab", "category": "Laboratory", "x": null, "y": null },
+        { "id": "216", "name": "Web Development Lab", "category": "Laboratory", "x": null, "y": null },
+        { "id": "217", "name": "Information & Network Security Lab", "category": "Laboratory", "x": null, "y": null },
+        { "id": "218", "name": "Artificial Intelligence Lab", "category": "Laboratory", "x": null, "y": null },
+        { "id": "219", "name": "Computer Vision Lab", "category": "Laboratory", "x": null, "y": null }
+      ],
+      "corridors": "not surveyed"
+    },
+    {
+      "level": 3, "name": "Third Floor",
+      "entrance": null,
+      "stairs": [{ "id": "STAIRS_3", "x": null, "y": null }],
+      "lift": [{ "id": "LIFT_3", "x": null, "y": null }],
+      "rooms": [
+        { "id": "307A", "name": "Centre for Technical Support", "category": "Office", "x": null, "y": null },
+        { "id": "312", "name": "Art & Digital Lab", "category": "Laboratory", "x": null, "y": null },
+        { "id": "316", "name": "Computer Engineering Lab", "category": "Laboratory", "x": null, "y": null },
+        { "id": "317", "name": "Open Source Technology Lab", "category": "Laboratory", "x": null, "y": null },
+        { "id": "318", "name": "Data Analytics Lab", "category": "Laboratory", "x": null, "y": null },
+        { "id": "319", "name": "Information Security Lab", "category": "Laboratory", "x": null, "y": null },
+        { "id": "321", "name": "Dean's Office", "category": "Office", "x": null, "y": null }
+      ],
+      "corridors": "not surveyed"
+    },
+    {
+      "level": 4, "name": "Fourth Floor",
+      "entrance": null,
+      "stairs": [{ "id": "STAIRS_4", "x": null, "y": null }],
+      "lift": [{ "id": "LIFT_4", "x": null, "y": null }],
+      "rooms": [
+        { "id": "412", "name": "Homi Bhabha Gallery", "category": "Shop / Facility", "x": null, "y": null },
+        { "id": "416", "name": "Cloud Computing Lab", "category": "Laboratory", "x": null, "y": null },
+        { "id": "417", "name": "Software Systems Lab", "category": "Laboratory", "x": null, "y": null },
+        { "id": "418", "name": "Computational Intelligence Lab", "category": "Laboratory", "x": null, "y": null },
+        { "id": "419", "name": "Image Processing & Graphics Lab", "category": "Laboratory", "x": null, "y": null }
+      ],
+      "corridors": "not surveyed"
+    },
+    {
+      "level": 5, "name": "Fifth Floor",
+      "entrance": null,
+      "stairs": [{ "id": "STAIRS_5", "x": null, "y": null }],
+      "lift": [{ "id": "LIFT_5", "x": null, "y": null }],
+      "rooms": [
+        { "id": "515", "name": "Intel Multicore Lab", "category": "Laboratory", "x": null, "y": null },
+        { "id": "516", "name": "VIT-Accenture Innovation Lab", "category": "Laboratory", "x": null, "y": null },
+        { "id": "517", "name": "AI and Machine Learning Lab", "category": "Laboratory", "x": null, "y": null },
+        { "id": "520", "name": "Analog and Digital Circuits Hardware Lab", "category": "Laboratory", "x": null, "y": null }
+      ],
+      "corridors": "not surveyed"
+    },
+    {
+      "level": 6, "name": "Sixth Floor",
+      "entrance": null,
+      "stairs": [{ "id": "STAIRS_6", "x": null, "y": null }],
+      "lift": [{ "id": "LIFT_6", "x": null, "y": null }],
+      "rooms": [
+        { "id": "614", "name": "Sarojini Naidu Gallery", "category": "Shop / Facility", "x": null, "y": null },
+        { "id": "620", "name": "Mathematics Computing Lab", "category": "Laboratory", "x": null, "y": null },
+        { "id": "621", "name": "High Performance Computing Lab", "category": "Laboratory", "x": null, "y": null },
+        { "id": "622", "name": "Big Data Analysis Lab", "category": "Laboratory", "x": null, "y": null },
+        { "id": "624", "name": "Dean's Office", "category": "Office", "x": null, "y": null }
+      ],
+      "corridors": "not surveyed"
+    },
+    {
+      "level": 7, "name": "Seventh Floor",
+      "note": "NOT LISTED on the source page. Unverified whether this floor exists, is numbered differently, or was simply omitted from the published table. Confirm on site before using.",
+      "entrance": null,
+      "stairs": [{ "id": "STAIRS_7", "x": null, "y": null }],
+      "lift": [{ "id": "LIFT_7", "x": null, "y": null }],
+      "rooms": [],
+      "corridors": "not surveyed"
+    },
+    {
+      "level": 8, "name": "Eighth Floor",
+      "entrance": null,
+      "stairs": [{ "id": "STAIRS_8", "x": null, "y": null }],
+      "lift": [{ "id": "LIFT_8", "x": null, "y": null }],
+      "rooms": [
+        { "id": "806", "name": "Machine Intelligence and Cognitive Computing Lab", "category": "Laboratory", "x": null, "y": null },
+        { "id": "810", "name": "Controller of Examinations", "category": "Office", "x": null, "y": null },
+        { "id": "811", "name": "Bhagat Singh Gallery", "category": "Shop / Facility", "x": null, "y": null },
+        { "id": "812", "name": "Director's Office", "category": "Office", "x": null, "y": null },
+        { "id": "813", "name": "Deputy Director's Office", "category": "Office", "x": null, "y": null },
+        { "id": "820", "name": "Academics Office", "category": "Office", "x": null, "y": null, "corroborated_by": "https://vit.ac.in/?p=3342" }
+      ],
+      "corridors": "not surveyed"
+    }
+  ],
+  "non_navigable_service_areas": [
+    { "name": "Generator Room", "area_sqm": 268.3, "department": "Electrical Maintenance" },
+    { "name": "Pump Room", "department": "unspecified" },
+    { "name": "Chiller Room", "department": "AC Maintenance" },
+    { "name": "Annex", "note": "mentioned on the source page with no further detail" },
+    { "name": "Power House and Chiller Plant", "note": "mentioned on the source page with no further detail" }
+  ]
+}

@@ -1,0 +1,1142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>VIT Campus Navigator</title>
+<style>
+  :root {
+    --canvas: #f4f6f9; --surface: #ffffff; --ink: #1b2430; --muted: #667281; --line: #e2e7ee;
+    --route: #1e6fd9; --route-dark: #0f4fa8; --dest: #e4572e; --closed: #d93025; --ok: #188038;
+    --corridor: #e8edf3; --corridor-edge: #d3dbe5; --wall: #c3ccd7;
+    --lift: #7b4fc9; --stairs: #7a8594;
+    --radius-lg: 16px; --radius: 10px;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; }
+  body { font-family: system-ui, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+         color: var(--ink); background: var(--canvas); font-size: 15px; line-height: 1.45; }
+  button, input, select { font: inherit; color: inherit; }
+  :focus-visible { outline: 3px solid #f2b705; outline-offset: 2px; }
+
+  /* ---------- header ---------- */
+  .top { display: flex; align-items: center; justify-content: space-between; gap: 16px;
+         padding: 14px 24px; background: var(--surface); border-bottom: 1px solid var(--line); }
+  .brand { display: flex; align-items: center; gap: 12px; }
+  .brand-mark { width: 34px; height: 34px; border-radius: 10px; background: var(--route);
+                display: grid; place-items: center; }
+  .brand h1 { font-size: 18px; margin: 0; letter-spacing: -.01em; }
+  .brand p { margin: 0; font-size: 13px; color: var(--muted); }
+  .view-toggle { display: inline-flex; background: var(--canvas); border: 1px solid var(--line);
+                 border-radius: 999px; padding: 3px; }
+  .view-toggle button { border: 0; background: transparent; padding: 6px 14px; border-radius: 999px;
+                        cursor: pointer; font-size: 13px; color: var(--muted); }
+  .view-toggle button[aria-pressed="true"] { background: var(--surface); color: var(--ink);
+                        box-shadow: 0 1px 3px rgba(27,36,48,.15); font-weight: 600; }
+
+  /* ---------- layout ---------- */
+  .app { display: grid; grid-template-columns: 390px minmax(0, 1fr); gap: 20px; padding: 20px 24px 28px;
+         max-width: 1440px; margin: 0 auto; }
+  @media (max-width: 980px) {
+    .app { display: flex; flex-direction: column; padding: 14px; gap: 14px; }
+    .app > .col { display: contents; }             /* let cards from both columns interleave */
+    #cardHere { order: 1; } #cardDest { order: 2; } #cardMode { order: 3; } #notice { order: 4; }
+    .map-card { order: 5; } #routeCard { order: 6; } .demo { order: 7; }
+    .map-body { overflow-x: auto; }
+    #map { min-width: 620px; }
+    .top { padding: 12px 14px; }
+    .long { display: none; }
+  }
+  @media (min-width: 981px) { .short { display: none; } }
+  .col { display: flex; flex-direction: column; gap: 16px; min-width: 0; }
+  .card { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius-lg); padding: 18px; }
+  .card h2 { font-size: 13px; font-weight: 600; color: var(--muted); margin: 0 0 8px; }
+
+  /* where am I */
+  .here { display: flex; align-items: center; gap: 12px; }
+  .here-dot { width: 38px; height: 38px; border-radius: 50%; background: #e7f0fc; display: grid; place-items: center; flex: none; font-size: 18px; }
+  .here-name { font-size: 18px; font-weight: 650; }
+  .here-sub { font-size: 13px; color: var(--muted); }
+  .here-actions { display: flex; gap: 8px; margin-top: 12px; }
+  .ghost { border: 1px solid var(--line); background: var(--surface); border-radius: var(--radius);
+           padding: 8px 12px; cursor: pointer; font-size: 14px; }
+  .ghost:hover { border-color: #b9c3cf; }
+  .ghost.small { padding: 6px 10px; font-size: 13px; }
+  select.field, input.field { width: 100%; border: 1px solid var(--line); border-radius: var(--radius);
+           padding: 10px 12px; background: var(--surface); font-size: 15px; }
+  .hint { font-size: 13px; color: var(--muted); margin-top: 8px; }
+
+  /* destination */
+  .search { position: relative; }
+  .search input { padding-left: 38px; font-size: 16px; }
+  .search svg { position: absolute; left: 12px; top: 50%; transform: translateY(-50%); }
+  .chips { display: flex; flex-wrap: wrap; gap: 6px; margin: 12px 0 10px; }
+  .chip { border: 1px solid var(--line); background: var(--surface); border-radius: 999px; padding: 5px 12px;
+          font-size: 13px; cursor: pointer; }
+  .chip[aria-pressed="true"] { background: var(--ink); color: #fff; border-color: var(--ink); }
+  .dest-list { list-style: none; margin: 0; padding: 0; max-height: 260px; overflow: auto; }
+  .dest-list button { width: 100%; text-align: left; display: flex; justify-content: space-between; align-items: center;
+                      gap: 10px; border: 0; background: transparent; padding: 10px 10px; border-radius: var(--radius); cursor: pointer; }
+  .dest-list button:hover { background: var(--canvas); }
+  .dest-list button[aria-selected="true"] { background: #fdeee9; }
+  .dest-name { font-weight: 600; }
+  .dest-cat { font-size: 12px; color: var(--muted); }
+  .floor-tag { font-size: 12px; color: var(--muted); border: 1px solid var(--line); border-radius: 6px; padding: 1px 7px; white-space: nowrap; }
+
+  /* mode */
+  .modes { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+  .mode { border: 1.5px solid var(--line); background: var(--surface); border-radius: var(--radius);
+          padding: 10px; cursor: pointer; text-align: left; }
+  .mode[aria-pressed="true"] { border-color: var(--route); background: #eef4fd; }
+  .mode b { display: block; font-size: 15px; }
+  .mode span { font-size: 12px; color: var(--muted); }
+
+  .primary { width: 100%; border: 0; border-radius: 12px; padding: 14px; background: var(--route); color: #fff;
+             font-size: 16px; font-weight: 650; cursor: pointer; }
+  .primary:hover { background: var(--route-dark); }
+  .primary:disabled { background: #9db9e3; cursor: default; }
+
+  /* route card */
+  .card h2.route-title { font-size: 20px; font-weight: 700; color: var(--ink); margin: 0 0 10px; letter-spacing: -.01em; }
+  .fromto { display: grid; grid-template-columns: 22px 1fr; column-gap: 8px; font-size: 14px; }
+  .fromto .rail { display: flex; flex-direction: column; align-items: center; }
+  .fromto .rail i { display: block; width: 2px; flex: 1; background: var(--line); margin: 2px 0; min-height: 14px; }
+  .facts { display: flex; flex-wrap: wrap; gap: 6px; margin: 14px 0 4px; }
+  .fact { background: var(--canvas); border-radius: 8px; padding: 5px 10px; font-size: 13px; font-weight: 600; }
+  .fact.lift { background: #f1ebfb; color: #5b36a3; }
+  .fact.stairs { background: #eef0f3; color: #4b5563; }
+  .fact.access { background: #e6f4ea; color: var(--ok); }
+  .steps { list-style: none; margin: 14px 0 0; padding: 0; }
+  .steps li { display: grid; grid-template-columns: 30px 1fr; gap: 10px; align-items: start; padding: 9px 6px; border-radius: 10px; cursor: pointer; }
+  .steps li:hover { background: var(--canvas); }
+  .steps li.current { background: #eef4fd; }
+  .step-ic { width: 30px; height: 30px; border-radius: 8px; background: var(--canvas); display: grid; place-items: center; }
+  .steps li.transition .step-ic { background: #f1ebfb; }
+  .steps .floor-note { font-size: 12px; color: var(--muted); }
+  .nav-live { margin-top: 12px; border: 1.5px solid var(--route); border-radius: 12px; padding: 14px; }
+  .nav-live .count { font-size: 12px; color: var(--muted); }
+  .nav-live .now { font-size: 18px; font-weight: 700; margin: 4px 0 12px; }
+  .nav-buttons { display: flex; gap: 8px; }
+  .nav-buttons .ghost { flex: 1; }
+  .live-badge { display: inline-flex; align-items: center; gap: 5px; font-size: 12px; font-weight: 600; padding: 3px 8px; border-radius: 20px; margin-bottom: 8px; }
+  .live-badge.sensor { background: #e6f4ea; color: #0f5a26; }
+  .live-badge.simulated { background: #e8f1fd; color: #11417f; }
+  .live-badge .dot { width: 7px; height: 7px; border-radius: 50%; animation: livepulse 1s ease-in-out infinite; }
+  .live-badge.sensor .dot { background: #0f5a26; }
+  .live-badge.simulated .dot { background: #11417f; }
+  @keyframes livepulse { 0%,100% { opacity: 1; } 50% { opacity: .35; } }
+  .seg-progress { height: 6px; background: var(--line); border-radius: 3px; margin: 6px 0 10px; overflow: hidden; }
+  .seg-progress-bar { height: 100%; background: var(--route); border-radius: 3px; transition: width .3s linear; }
+  .step-count-pill { font-size: 12px; color: var(--muted); margin-bottom: 2px; }
+  .live-start-row { display: flex; gap: 8px; margin-top: 14px; }
+  .live-start-row .primary { flex: 2; }
+  .live-start-row .ghost { flex: 1; }
+
+  .notice { border-radius: 12px; padding: 12px 14px; font-size: 14px; }
+  .notice b { display: block; margin-bottom: 2px; }
+  .notice.info { background: #e8f1fd; color: #11417f; }
+  .notice.warn { background: #fdecea; color: #8c1d18; }
+  .notice.good { background: #e6f4ea; color: #0f5a26; }
+
+  /* map */
+  .map-card { padding: 0; overflow: hidden; }
+  .map-head { display: flex; justify-content: space-between; align-items: center; padding: 14px 18px; border-bottom: 1px solid var(--line); gap: 12px; flex-wrap: wrap; }
+  .floor-tabs { display: inline-flex; gap: 6px; }
+  .floor-tabs button { border: 1px solid var(--line); background: var(--surface); border-radius: 10px; padding: 7px 14px; cursor: pointer; font-weight: 600; position: relative; }
+  .floor-tabs button[aria-pressed="true"] { background: var(--ink); color: #fff; border-color: var(--ink); }
+  .floor-tabs .has-route::after { content: ""; position: absolute; top: 5px; right: 5px; width: 7px; height: 7px; border-radius: 50%; background: var(--route); }
+  .floor-tabs button[aria-pressed="true"].has-route::after { background: #8fb8f3; }
+  .map-building { font-size: 13px; color: var(--muted); }
+  .map-body { padding: 8px 12px 12px; }
+  #map { width: 100%; height: auto; display: block; }
+  #map .clickable { cursor: pointer; }
+  .legend { display: flex; flex-wrap: wrap; gap: 14px; padding: 0 18px 14px; font-size: 12px; color: var(--muted); }
+  .legend i { display: inline-block; width: 18px; height: 6px; border-radius: 3px; vertical-align: middle; margin-right: 6px; }
+  .foot { font-size: 12px; color: var(--muted); text-align: center; padding: 0 0 18px; }
+
+  /* demo panel */
+  .demo { display: none; }
+  body.demo-view .demo { display: block; }
+  .demo-card { border: 1.5px dashed #b9c3cf; background: #fbfcfd; }
+  .demo-card > h2 { color: var(--ink); font-size: 15px; margin-bottom: 4px; }
+  .demo-card > p { margin: 0 0 10px; font-size: 13px; color: var(--muted); }
+  .demo details { border-top: 1px solid var(--line); padding: 10px 0; }
+  .demo summary { cursor: pointer; font-weight: 600; font-size: 14px; }
+  .demo .row { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; margin-top: 8px; }
+  .demo .row > select { flex: 1; min-width: 180px; width: auto; }
+  .demo table { width: 100%; border-collapse: collapse; font-size: 12px; margin-top: 8px; }
+  .demo th, .demo td { text-align: left; padding: 4px 6px; border-bottom: 1px solid var(--line); vertical-align: top; }
+  .demo th { color: var(--muted); font-weight: 600; }
+  .demo code, .demo pre { font-family: ui-monospace, Consolas, "Cascadia Mono", monospace; font-size: 12px; }
+  .demo pre { background: #fff; border: 1px solid var(--line); border-radius: 8px; padding: 8px; max-height: 280px; overflow: auto; margin: 8px 0 0; }
+  .demo .kv { font-size: 13px; margin-top: 6px; }
+  .danger { border-color: #f1b8b3; color: var(--closed); }
+  .ok-btn { border-color: #b7dfc3; color: var(--ok); }
+  .demo-tag { display: inline-block; font-size: 11px; background: #fff4d6; color: #7a5500; border-radius: 6px; padding: 1px 6px; margin-left: 6px; }
+  .sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
+  @media (prefers-reduced-motion: reduce) { * { transition: none !important; animation: none !important; } }
+  .pulse { animation: pulse 2s ease-out infinite; transform-origin: center; transform-box: fill-box; }
+  @keyframes pulse { 0% { opacity: .55; transform: scale(.6); } 100% { opacity: 0; transform: scale(1.6); } }
+
+/* Seven-floor visual refresh */
+:root{--route:#1769e0;--canvas:#f0f5fd;--ink:#152b4d;--line:#d9e5f4}body{background:linear-gradient(135deg,#f3f8ff,#e9f2ff)}button{transition:transform .16s,box-shadow .16s}button:hover{box-shadow:0 3px 12px #1d5ba21a} .floor-tabs{flex-wrap:wrap} .map-body{background:#f8fbff} .dest-list button{border-radius:9px} @media(max-width:700px){.floor-tabs button{padding:9px 11px}}
+</style>
+</head>
+<body>
+<header class="top">
+  <div class="brand">
+    <div class="brand-mark" aria-hidden="true">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s-7-6.2-7-11.5A7 7 0 0 1 19 9.5C19 14.8 12 21 12 21z"/><circle cx="12" cy="9.5" r="2.5"/></svg>
+    </div>
+    <div>
+      <h1>VIT Campus Navigator</h1>
+      <p id="buildingName">Sample Academic Block</p>
+    </div>
+  </div>
+  <div class="view-toggle" role="group" aria-label="View">
+    <button id="viewUser" aria-pressed="true"><span class="long">User view</span><span class="short">User</span></button>
+    <button id="viewDemo" aria-pressed="false"><span class="long">Demo / Technical view</span><span class="short">Demo</span></button>
+  </div>
+</header>
+
+<main class="app">
+  <div class="col">
+    <!-- 1. Where am I -->
+    <section class="card" id="cardHere" aria-labelledby="hHere">
+      <h2 id="hHere">Current location</h2>
+      <div class="here">
+        <div class="here-dot" aria-hidden="true">📍</div>
+        <div><div class="here-name" id="hereName">–</div><div class="here-sub" id="hereSub"></div></div>
+      </div>
+      <div class="here-actions">
+        <button class="ghost small" id="btnLocate">Locate me</button>
+        <button class="ghost small" id="btnChangeStart" aria-expanded="false">Choose location</button>
+      </div>
+      <select class="field" id="startSelect" aria-label="Choose your current location" hidden style="margin-top:10px"></select>
+      <div class="hint" id="locateHint" hidden></div>
+    </section>
+
+    <!-- 2. Where to -->
+    <section class="card" id="cardDest" aria-labelledby="hDest">
+      <h2 id="hDest">Where do you want to go?</h2>
+      <div class="search">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#667281" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+        <input class="field" id="destSearch" type="search" placeholder="Search a room, lab or facility" aria-label="Search destinations" autocomplete="off">
+      </div>
+      <div class="chips" id="catChips" role="group" aria-label="Filter by category"></div>
+      <ul class="dest-list" id="destList" role="listbox" aria-label="Destinations"></ul>
+    </section>
+
+    <!-- 3. Mode + go -->
+    <section class="card" id="cardMode" aria-labelledby="hMode">
+      <h2 id="hMode">Navigation mode</h2>
+      <div class="modes" role="group" aria-label="Navigation mode">
+        <button class="mode" data-mode="general" aria-pressed="true"><b>🚶 General</b><span>Shortest walk</span></button>
+        <button class="mode" data-mode="accessibility" aria-pressed="false"><b>♿ Accessibility</b><span>Step-free, no stairs</span></button>
+      </div>
+      <button class="primary" id="btnFind" style="margin-top:14px" disabled>Find route</button>
+    </section>
+
+    <div id="notice" aria-live="polite"></div>
+
+    <!-- 4. Route -->
+    <section class="card" id="routeCard" hidden aria-live="polite"></section>
+  </div>
+
+  <div class="col">
+    <section class="card map-card" aria-label="Indoor map">
+      <div class="map-head">
+        <div class="floor-tabs" id="floorTabs" role="group" aria-label="Floor"></div>
+        <div class="map-building" id="mapCaption"></div>
+      </div>
+      <div class="map-body"><svg id="map" role="img" aria-label="Floor plan"></svg></div>
+      <div class="legend" aria-hidden="true">
+        <span><i style="background:var(--route)"></i>Your route</span>
+        <span><i style="background:var(--corridor-edge)"></i>Corridor</span>
+        <span><i style="background:var(--closed)"></i>Closed</span>
+      </div>
+    </section>
+
+    <!-- ================= DEMO / TECHNICAL VIEW ================= -->
+    <section class="card demo demo-card" aria-labelledby="hDemo">
+      <h2 id="hDemo">Developer / Demo controls</h2>
+      <p>Technical view of the same running system. Everything here calls the real Flask API; nothing is simulated in the browser.</p>
+
+      <details open>
+        <summary>Localization (Module 3)</summary>
+        <div class="row">
+          <select class="field" id="scenarioSelect" aria-label="Localization scenario"></select>
+          <button class="ghost small" id="btnRunLoc">Run localization</button>
+        </div>
+        <div id="locDetails" class="kv">Wi-Fi and IMU inputs are simulated; QR codes are decoded from rendered images with OpenCV.</div>
+      </details>
+
+      <details open>
+        <summary>Routing (Modules 4 and 5)</summary>
+        <div class="row">
+          <label for="algoSelect" style="font-size:13px">Algorithm</label>
+          <select class="field" id="algoSelect"><option value="astar">A*</option><option value="dijkstra">Dijkstra</option></select>
+          <button class="ghost small" id="btnCompare">Compare Dijkstra vs A*</button>
+        </div>
+        <div class="kv">Edge cost = 1.0 × distance + 2.0 × turns. Accessibility mode removes stairs edges; closed edges are removed in every mode.</div>
+        <div id="compareOut" class="kv"></div>
+        <div id="routeInternals" class="kv">No route computed yet.</div>
+      </details>
+
+      <details open>
+        <summary>Closures and dynamic rerouting (Module 5)</summary>
+        <div class="row">
+          <button class="ghost small danger" data-block="F0_LIFT1|F1_LIFT1">Put lift out of service</button>
+          <button class="ghost small danger" data-block="F0_C04|F0_C05">Close floor 1 corridor (lobby → mid)</button>
+          <button class="ghost small danger" data-block="F0_STAIRS1|F1_STAIRS1">Close stairs</button>
+        </div>
+        <div class="row">
+          <select class="field" id="edgeSelect" aria-label="Edge to block"></select>
+          <button class="ghost small danger" id="btnBlock">Block edge and reroute</button>
+          <button class="ghost small ok-btn" id="btnClear">Clear all closures</button>
+        </div>
+        <div id="blockedList" class="kv">No closures.</div>
+        <div id="rerouteDiff" class="kv"></div>
+      </details>
+
+      <details>
+        <summary>Indoor graph (Modules 1 and 2)</summary>
+        <div id="graphInfo" class="kv"></div>
+        <div class="row"><label style="font-size:13px"><input type="checkbox" id="overlayToggle"> Show graph overlay (node IDs and edges) on the map</label></div>
+      </details>
+
+      <details>
+        <summary>Frontend ↔ Flask API calls</summary>
+        <table><thead><tr><th>Time</th><th>Request</th><th>Status</th><th>ms</th></tr></thead><tbody id="apiLog"></tbody></table>
+      </details>
+
+      <details>
+        <summary>Where each feature is implemented</summary>
+        <table>
+          <thead><tr><th>Feature</th><th>File / function</th></tr></thead>
+          <tbody>
+            <tr><td>Campus data schema</td><td><code>data/vit_sample_building.json</code>, <code>navigation/campus_data.py</code></td></tr>
+            <tr><td>Indoor graph (nodes, edges, floors)</td><td><code>navigation/graph_builder.py · build_graph</code></td></tr>
+            <tr><td>Dijkstra / A*</td><td><code>navigation/routing.py · Navigator.route</code></td></tr>
+            <tr><td>Accessibility filtering</td><td><code>navigation/routing.py · Navigator.searchable_graph</code></td></tr>
+            <tr><td>Blocked edges and rerouting</td><td><code>navigation/routing.py · block_edge / clear_blocks</code>; frontend re-requests <code>/api/route</code></td></tr>
+            <tr><td>Multi-floor movement</td><td>lift and stairs edges between floors in the graph; <code>navigation/directions.py</code> describes them</td></tr>
+            <tr><td>Wi-Fi fingerprinting</td><td><code>navigation/localization/wifi.py</code></td></tr>
+            <tr><td>QR landmarks</td><td><code>navigation/localization/qr_landmarks.py</code></td></tr>
+            <tr><td>IMU / PDR</td><td><code>navigation/localization/pdr.py</code></td></tr>
+            <tr><td>Fusion and snapping to graph</td><td><code>localization/fusion.py</code>, <code>Navigator.snap_to_node</code></td></tr>
+            <tr><td>Turn-by-turn directions</td><td><code>navigation/directions.py · build_directions</code></td></tr>
+            <tr><td>Flask API</td><td><code>app.py</code> (<code>/api/campus</code>, <code>/api/graph</code>, <code>/api/route</code>, <code>/api/block</code>, <code>/api/clear</code>, <code>/api/localize/&lt;id&gt;</code>)</td></tr>
+          </tbody>
+        </table>
+      </details>
+
+      <details>
+        <summary>Raw API response</summary>
+        <pre id="raw">–</pre>
+      </details>
+    </section>
+  </div>
+</main>
+<p class="foot">Prototype: sample building layout (not an official VIT floor plan) and simulated Wi-Fi/motion-sensor input.</p>
+
+<script>
+/* ======================================================================
+   State
+   ====================================================================== */
+const $ = id => document.getElementById(id);
+const S = {
+  campus: null, graph: null, nodes: {}, edges: [],
+  start: null, dest: null, mode: 'general', algo: 'astar',
+  floor: 0, route: null, request: null, stepIdx: null,
+  category: 'All', search: '', overlay: false, locResult: null, apiLog: [],
+  liveNav: false, liveSteps: 0, liveDistWalked: 0, liveMode: null,
+};
+const CATEGORY_PLURAL = { 'Classroom': 'Classrooms', 'Laboratory': 'Laboratories', 'Auditorium': 'Auditoriums',
+  'Seminar Hall': 'Seminar halls', 'Office': 'Offices', 'Shop / Facility': 'Facilities' };
+const CATEGORY_TINT = { 'Classroom': '#e7f0fc', 'Laboratory': '#e6f4ea', 'Auditorium': '#fdf1e3',
+  'Seminar Hall': '#f1ebfb', 'Office': '#eef1f4', 'Shop / Facility': '#fdeee9' };
+
+/* ======================================================================
+   API (every call is logged for the demo view)
+   ====================================================================== */
+async function api(path, body) {
+  const t0 = performance.now();
+  const opts = body === undefined ? {} : { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body) };
+  let res, data;
+  try {
+    res = await fetch(path, opts);
+    data = await res.json();
+  } finally {
+    S.apiLog.unshift({ t: new Date().toLocaleTimeString(), req: `${opts.method || 'GET'} ${path}`,
+                       status: res ? res.status : 'failed', ms: Math.round(performance.now() - t0) });
+    S.apiLog = S.apiLog.slice(0, 12);
+    renderApiLog();
+  }
+  if (!res.ok) throw new Error(data.error || res.statusText);
+  return data;
+}
+
+/* ======================================================================
+   Helpers
+   ====================================================================== */
+const esc = s => String(s).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+const node = id => S.nodes[id];
+const edgeOf = (u, v) => S.edges.find(e => (e.u === u && e.v === v) || (e.u === v && e.v === u));
+const floorsOf = () => S.graph.floors;
+
+function placeLabel(id) {                         // user-facing place name, never the node ID
+  const n = node(id);
+  return n ? n.name : '';
+}
+function closureReasons() {
+  const types = new Set(S.edges.filter(e => e.blocked).map(e => e.type));
+  const out = [];
+  if (types.has('lift')) out.push('The lift is currently out of service.');
+  if (types.has('stairs')) out.push('The stairs are currently closed.');
+  if (types.has('corridor') || types.has('door')) out.push('A corridor is currently closed.');
+  return out;
+}
+function routeUsesBlocked(route) {
+  if (!route || !route.path) return false;
+  return route.path.slice(1).some((v, i) => { const e = edgeOf(route.path[i], v); return e && e.blocked; });
+}
+function transitions(route) {                      // [{type, from, to, fromFloor, toFloor}]
+  const out = [];
+  if (!route || !route.path) return out;
+  route.path.slice(1).forEach((v, i) => {
+    const u = route.path[i], e = edgeOf(u, v);
+    if (e && (e.type === 'lift' || e.type === 'stairs'))
+      out.push({ type: e.type, from: u, to: v, fromFloor: node(u).floor, toFloor: node(v).floor });
+  });
+  return out;
+}
+
+/* ======================================================================
+   Icons (inline SVG, one stroke style)
+   ====================================================================== */
+const ICON = {
+  start: '<circle cx="12" cy="12" r="5" fill="#1e6fd9" stroke="none"/><circle cx="12" cy="12" r="8.5"/>',
+  straight: '<path d="M12 20V5M6.5 10.5 12 5l5.5 5.5"/>',
+  'turn-left': '<path d="M16 20v-7a3 3 0 0 0-3-3H6M10 5.5 5.5 10l4.5 4.5"/>',
+  'turn-right': '<path d="M8 20v-7a3 3 0 0 1 3-3h7M14 5.5l4.5 4.5-4.5 4.5"/>',
+  around: '<path d="M8 20V9a4 4 0 0 1 8 0v4M12.5 9.5 16 13l3.5-3.5"/>',
+  lift: '<rect x="5" y="3.5" width="14" height="17" rx="2"/><path d="m9 9.5 3-3 3 3M9 14.5l3 3 3-3"/>',
+  stairs: '<path d="M4 19h4v-4h4v-4h4V7h4"/>',
+  arrive: '<path d="M12 21s-6-5.3-6-10a6 6 0 0 1 12 0c0 4.7-6 10-6 10z" fill="#e4572e" stroke="#e4572e"/><circle cx="12" cy="11" r="2" fill="#fff" stroke="none"/>',
+};
+const icon = (k, color = '#1b2430') =>
+  `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="${color}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${ICON[k] || ICON.straight}</svg>`;
+
+/* ======================================================================
+   Left panel: current location, destinations, mode
+   ====================================================================== */
+function renderHere() {
+  const n = node(S.start);
+  $('hereName').textContent = n ? n.name : '–';
+  $('hereSub').textContent = n ? `Floor ${n.floor}` : '';
+  $('startSelect').value = S.start;
+}
+function setStart(id, fromLocate) {
+  S.start = id;
+  if (!fromLocate) $('locateHint').hidden = true;
+  renderHere(); S.floor = node(id).floor; clearRoute(); renderMap();
+}
+
+function renderCategories() {
+  const cats = ['All', ...new Set(S.campus.destinations.map(d => d.category))];
+  $('catChips').innerHTML = cats.map(c =>
+    `<button class="chip" data-cat="${esc(c)}" aria-pressed="${c === S.category}">${esc(c === 'All' ? 'All' : (CATEGORY_PLURAL[c] || c))}</button>`).join('');
+}
+function renderDestinations() {
+  const q = S.search.trim().toLowerCase();
+  const items = S.campus.destinations.filter(d =>
+    (S.category === 'All' || d.category === S.category) &&
+    (!q || d.name.toLowerCase().includes(q) || d.id.toLowerCase().includes(q) || d.category.toLowerCase().includes(q)));
+  $('destList').innerHTML = items.length ? items.map(d =>
+    `<li><button role="option" data-dest="${esc(d.id)}" aria-selected="${d.id === S.dest}">
+       <span><span class="dest-name">${esc(d.name)}</span><br><span class="dest-cat">${esc(d.category)}</span></span>
+       <span class="floor-tag">${d.floor === 0 ? "Ground" : "Floor " + d.floor}</span></button></li>`).join('')
+    : `<li class="hint" style="padding:8px">No place matches “${esc(S.search)}”.</li>`;
+  $('btnFind').disabled = !S.dest;
+}
+function setDest(id) {
+  S.dest = id; renderDestinations(); clearRoute(); renderMap();
+}
+function setMode(m) {
+  S.mode = m;
+  document.querySelectorAll('.mode').forEach(b => b.setAttribute('aria-pressed', String(b.dataset.mode === m)));
+  if (S.route) findRoute();
+}
+
+/* ======================================================================
+   Routing + user-facing messages
+   ====================================================================== */
+function clearRoute() {
+  stopLiveNav();
+  S.route = null; S.request = null; S.stepIdx = null;
+  $('routeCard').hidden = true; $('notice').innerHTML = '';
+  renderRouteInternals();
+}
+function notice(kind, title, body) {
+  $('notice').innerHTML = `<div class="notice ${kind}"><b>${esc(title)}</b>${body ? esc(body) : ''}</div>`;
+}
+
+async function findRoute(context) {
+  if (!S.start || !S.dest) return;
+  const previous = S.route;
+  S.request = { source: S.start, destination: S.dest, mode: S.mode, algorithm: S.algo };
+  let r;
+  try { r = await api('/api/route', S.request); }
+  catch (err) { notice('warn', 'Could not calculate a route.', ' ' + err.message); return; }
+  S.route = r; S.stepIdx = null;
+  $('raw').textContent = JSON.stringify(r, null, 2);
+
+  if (!r.route_found) {
+    const reasons = closureReasons().join(' ');
+    notice('warn', S.mode === 'accessibility' ? 'No accessible route is currently available.' : 'No route is currently available.', reasons ? ' ' + reasons : '');
+    $('routeCard').hidden = true;
+  } else if (context === 'closure' && previous && previous.path) {
+    const changed = previous.path.join('>') !== r.path.join('>');
+    if (changed) notice('info', 'Route updated', ' Your previous route is unavailable. A new route has been calculated. ' + closureReasons().join(' '));
+    else notice('good', 'Your route is not affected', ' A closure was reported elsewhere in the building.');
+  } else if (context === 'reopen' && previous && previous.path && previous.path.join('>') !== r.path.join('>')) {
+    notice('good', 'Route updated', ' Closed areas have reopened, so a shorter route is available.');
+  } else if (context !== 'closure') {
+    $('notice').innerHTML = '';
+  }
+
+  if (r.route_found) {
+    const t = transitions(r);
+    S.floor = node(r.source).floor;
+    renderRouteCard();
+    if (t.length && context !== 'closure') { /* keep start floor visible first */ }
+  }
+  renderRouteInternals(previous);
+  renderMap();
+}
+
+function renderRouteCard() {
+  const r = S.route, card = $('routeCard');
+  if (!r || !r.route_found) { card.hidden = true; return; }
+  const t = transitions(r);
+  const floors = [...new Set(r.floors)];
+  const facts = [`<span class="fact">${Math.round(r.distance_m)} m</span>`,
+                 `<span class="fact">${r.turns} turn${r.turns === 1 ? '' : 's'}</span>`];
+  if (r.uses_lift) facts.push('<span class="fact lift">Uses lift</span>');
+  if (r.uses_stairs) facts.push('<span class="fact stairs">Uses stairs</span>');
+  if (!r.uses_lift && !r.uses_stairs) facts.push('<span class="fact">Same floor</span>');
+  if (S.mode === 'accessibility') facts.push('<span class="fact access">♿ Step-free</span>');
+  if (floors.length > 1) facts.push(`<span class="fact">Floor ${floors[0]} → Floor ${floors[floors.length - 1]}</span>`);
+
+  const steps = r.directions.map((s, i) => {
+    const isT = s.kind === 'lift' || s.kind === 'stairs';
+    const fnote = isT ? `From Floor ${s.floor}` : (i > 0 && s.floor !== r.directions[i - 1].floor ? `Floor ${s.floor}` : '');
+    return `<li data-step="${i}" class="${isT ? 'transition' : ''} ${S.stepIdx === i ? 'current' : ''}">
+      <span class="step-ic">${icon(s.kind, isT ? '#5b36a3' : '#1b2430')}</span>
+      <span>${esc(s.text)}${fnote ? `<br><span class="floor-note">${esc(fnote)}</span>` : ''}</span></li>`;
+  }).join('');
+
+  let live;
+  if (S.stepIdx === null) {
+    live = `<div class="live-start-row">
+      <button class="primary" id="btnStartNav">Manual</button>
+      <button class="ghost" id="btnStartLive">🚶 Live sensor</button><button class="ghost" id="btnDemoNav">▶ Demo</button>
+    </div>`;
+  } else {
+    const seg = r.directions[S.stepIdx];
+    const segDist = seg.distance_m || 0;
+    const pct = segDist > 0 ? Math.min(100, Math.round(S.liveDistWalked / segDist * 100)) : 0;
+    const badge = S.liveNav
+      ? `<div class="live-badge ${S.liveMode === 'sensor' ? 'sensor' : 'simulated'}">
+           <span class="dot"></span>${S.liveMode === 'sensor' ? 'Live phone steps' : S.liveMode === 'simulated' ? 'DEMO: simulated' : S.liveMode === 'transition' ? 'Confirm floor change' : S.liveMode === 'unavailable' ? 'Motion unavailable' : 'Waiting for motion'}</div>`
+      : '';
+    const progressBar = S.liveNav && segDist > 0
+      ? `<div class="seg-progress"><div class="seg-progress-bar" style="width:${pct}%"></div></div>`
+      : '';
+    const stepCountPill = S.liveNav
+      ? (S.liveMode !== 'simulated'
+          ? `<div class="step-count-pill">👣 ${S.liveSteps} step${S.liveSteps === 1 ? '' : 's'} · ${(S.liveSteps * STEP_LENGTH_M).toFixed(1)} m</div>`
+          : `<div class="step-count-pill">🔄 ${S.liveSteps} simulated steps · ${(S.liveSteps * SIM_STEP_M).toFixed(1)} m</div>`)
+      : '';
+    live = `<div class="nav-live">
+      ${badge}
+      <div class="count">Step ${S.stepIdx + 1} of ${r.directions.length} · Floor ${r.directions[S.stepIdx].floor}</div>
+      <div class="now">${esc(r.directions[S.stepIdx].text)}</div>
+      ${progressBar}
+      ${stepCountPill}
+      ${S.liveNav && (seg.kind === 'lift' || seg.kind === 'stairs') ? '<button class="primary" id="btnConfirmFloor">I reached the next floor</button>' : ''}
+      ${S.liveNav && S.liveMode === 'unavailable' ? '<div class="step-count-pill">Motion sensor unavailable. Use HTTPS on a phone, or select Demo. No steps are fabricated in live mode.</div>' : ''}
+      <div class="nav-buttons">
+        <button class="ghost" id="btnPrev" ${S.stepIdx === 0 ? 'disabled' : ''}>Back</button>
+        ${S.liveNav
+          ? `<button class="ghost" id="btnStopLive" style="color:var(--closed)">Stop live</button>`
+          : `<button class="ghost" id="btnStartLive" style="color:var(--route-dark)">🚶 Live sensor</button><button class="ghost" id="btnDemoNav">▶ Demo</button>`}
+        <button class="ghost" id="btnNext">${S.stepIdx === r.directions.length - 1 ? 'Finish' : 'Next step'}</button>
+      </div></div>`;
+  }
+
+  card.innerHTML = `
+    <h2 class="route-title">Route to ${esc(r.destination_name)}</h2>
+    <div class="fromto">
+      <span class="rail">${icon('start')}<i></i></span><span>${esc(placeLabel(r.source))}, Floor ${node(r.source).floor}</span>
+      <span class="rail">${icon('arrive')}</span><span><b>${esc(r.destination_name)}</b>, Floor ${node(r.destination).floor}</span>
+    </div>
+    <div class="facts">${facts.join('')}</div>
+    ${t.length ? `<div class="hint">${t.map(x => x.type === 'lift' ? `Take the lift to Floor ${x.toFloor}` : `Use the stairs to Floor ${x.toFloor}`).join(' · ')}</div>` : ''}
+    ${live}
+    <ol class="steps" aria-label="Directions">${steps}</ol>`;
+  card.hidden = false;
+}
+
+function goStep(i) {
+  const r = S.route;
+  if (!r) return;
+  if (i >= r.directions.length) {
+    S.stepIdx = null; S.liveDistWalked = 0;
+    if (S.liveNav) stopLiveNav();
+    notice('good', `You have arrived at ${r.destination_name}.`, '');
+  } else {
+    S.stepIdx = Math.max(0, i);
+    S.liveDistWalked = 0;
+    S.floor = r.directions[S.stepIdx].floor;
+  }
+  renderRouteCard(); renderMap();
+}
+
+/* ======================================================================
+   Live pedestrian dead reckoning: real sensor steps, explicit demo mode.
+   Position is constrained to the planned route, not a GPS claim.
+   ====================================================================== */
+let _liveInterval = null, _motionListener = null;
+let _gravity = 9.81, _previousLinear = 0, _lastStepTime = 0;
+let _sensorSamples = 0, _sensorCheck = null;
+const SIM_STEP_M = 0.72, SIM_INTERVAL_MS = 650;
+const STEP_LENGTH_M = 0.72;
+
+async function startLiveNav(demo = false) {
+  if (!S.route || !S.route.route_found) return;
+  stopLiveNav();
+  S.liveNav = true; S.liveSteps = 0; S.liveDistWalked = 0;
+  S.liveMode = demo ? 'simulated' : 'waiting';
+  _gravity = 9.81; _previousLinear = 0; _lastStepTime = 0; _sensorSamples = 0;
+  if (S.stepIdx === null) { S.stepIdx = 0; S.floor = S.route.directions[0].floor; }
+  if (demo) { _startSim(); return; }
+  if (!window.isSecureContext && location.hostname !== 'localhost' && location.hostname !== '127.0.0.1') {
+    S.liveMode = 'unavailable'; renderRouteCard(); return;
+  }
+  if (!('DeviceMotionEvent' in window)) { S.liveMode = 'unavailable'; renderRouteCard(); return; }
+  try {
+    if (typeof DeviceMotionEvent.requestPermission === 'function') {
+      const permission = await DeviceMotionEvent.requestPermission();
+      if (permission !== 'granted') { S.liveMode = 'unavailable'; renderRouteCard(); return; }
+    }
+    if (!S.liveNav) return;
+    _motionListener = _motionHandler;
+    window.addEventListener('devicemotion', _motionListener);
+    _sensorCheck = setTimeout(() => {
+      if (S.liveNav && _sensorSamples === 0) { S.liveMode = 'unavailable'; renderRouteCard(); }
+    }, 3500);
+  } catch (_) { S.liveMode = 'unavailable'; }
+  renderRouteCard(); renderMap();
+}
+
+function _motionHandler(e) {
+  if (!S.liveNav || S.liveMode === 'simulated') return;
+  const a = e.accelerationIncludingGravity || e.acceleration;
+  if (!a || ![a.x, a.y, a.z].every(Number.isFinite)) return;
+  _sensorSamples++;
+  if (S.liveMode !== 'sensor') { S.liveMode = 'sensor'; renderRouteCard(); }
+  const magnitude = Math.hypot(a.x, a.y, a.z);
+  // Low-pass estimate of gravity, then detect a positive acceleration pulse.
+  _gravity = 0.88 * _gravity + 0.12 * magnitude;
+  const linear = magnitude - _gravity;
+  const now = performance.now();
+  if (linear > 1.25 && _previousLinear <= 1.25 && now - _lastStepTime > 340) {
+    _lastStepTime = now;
+    _onStep(STEP_LENGTH_M);
+  }
+  _previousLinear = linear;
+}
+
+function _startSim() {
+  S.liveMode = 'simulated';
+  if (_liveInterval) clearInterval(_liveInterval);
+  _liveInterval = setInterval(() => {
+    if (!S.liveNav || S.liveMode !== 'simulated') return;
+    _onStep(SIM_STEP_M);
+  }, SIM_INTERVAL_MS);
+  renderRouteCard();
+}
+
+function _onStep(stepMetres) {
+  if (!S.liveNav) return;
+  S.liveSteps++;
+  let remaining = stepMetres;
+  const directions = S.route.directions;
+  // Carry unused distance across successive segments instead of losing it.
+  let guard = 0;
+  while (remaining > 0 && S.stepIdx !== null && S.stepIdx < directions.length && guard++ < directions.length + 1) {
+    const seg = directions[S.stepIdx];
+    if (seg.kind === 'lift' || seg.kind === 'stairs') {
+      // Floor transitions require manual confirmation; steps cannot infer floor.
+      S.liveMode = S.liveMode === 'simulated' ? 'simulated' : 'transition';
+      break;
+    }
+    const length = Math.max(0, Number(seg.distance_m) || 0);
+    if (length === 0) {
+      if (S.stepIdx >= directions.length - 1) { stopLiveNav(); break; }
+      goStep(S.stepIdx + 1); continue;
+    }
+    const delta = Math.min(remaining, Math.max(0, length - S.liveDistWalked));
+    S.liveDistWalked += delta;
+    remaining -= delta;
+    if (S.liveDistWalked + 0.0001 >= length) {
+      if (S.stepIdx >= directions.length - 1) { stopLiveNav(); break; }
+      goStep(S.stepIdx + 1);
+    } else break;
+  }
+  renderRouteCard(); renderMap();
+}
+
+function confirmFloorTransition() {
+  if (!S.liveNav || S.stepIdx === null) return;
+  const seg = S.route.directions[S.stepIdx];
+  if (seg.kind !== 'lift' && seg.kind !== 'stairs') return;
+  if (S.stepIdx < S.route.directions.length - 1) goStep(S.stepIdx + 1);
+  if (S.liveMode === 'transition') S.liveMode = 'sensor';
+  renderRouteCard(); renderMap();
+}
+
+function stopLiveNav() {
+  S.liveNav = false; S.liveMode = null;
+  if (_liveInterval) { clearInterval(_liveInterval); _liveInterval = null; }
+  if (_sensorCheck) { clearTimeout(_sensorCheck); _sensorCheck = null; }
+  if (_motionListener) { window.removeEventListener('devicemotion', _motionListener); _motionListener = null; }
+  renderRouteCard(); renderMap();
+}
+
+/* ======================================================================
+   Floor-plan map
+   ====================================================================== */
+const U = 24;                      // pixels per metre
+const CORRIDOR_W = 2.6, SPUR_W = 1.5, ROOM_W = 5.5, ROOM_D = 4.6, STAIRS_W = 4, STAIRS_D = 3.4;
+
+function geometry() {
+  // shared frame for every floor so switching floors does not move the building
+  const xs = [], ys = [];
+  S.graph.nodes.forEach(n => { xs.push(n.x); ys.push(n.y); });
+  S.edges.forEach(e => (e.draw_path || []).forEach(p => { xs.push(p[0]); ys.push(p[1]); }));
+  const minX = Math.min(...xs) - 4, maxX = Math.max(...xs) + 4;
+  const minY = Math.min(...ys) - 3.5, maxY = Math.max(...ys) + ROOM_D + 2.5;
+  const P = (x, y) => [(x - minX) * U, (maxY - y) * U];
+  return { minX, maxX, minY, maxY, P, W: (maxX - minX) * U, H: (maxY - minY) * U };
+}
+function edgePoints(e, fromId) {    // node-to-node polyline in metres, oriented from fromId
+  const a = node(e.u), b = node(e.v);
+  let pts = [[a.x, a.y], ...(e.draw_path || []), [b.x, b.y]];
+  if (e.draw_from && e.draw_from !== e.u) pts = [[a.x, a.y], ...(e.draw_path || []).slice().reverse(), [b.x, b.y]];
+  if (fromId && fromId !== e.u) pts = pts.slice().reverse();
+  return pts;
+}
+const polyline = (pts, P) => pts.map(p => P(p[0], p[1]).map(v => v.toFixed(1)).join(',')).join(' ');
+
+function doorNeighbour(roomId) {
+  const e = S.edges.find(e => e.type === 'door' && (e.u === roomId || e.v === roomId));
+  return e ? node(e.u === roomId ? e.v : e.u) : null;
+}
+function roomRect(n) {              // rectangle (metres) placed beyond the room's door, away from the corridor
+  const nb = doorNeighbour(n.id) || { x: n.x, y: n.y - 1 };
+  const vertical = Math.abs(n.y - nb.y) >= Math.abs(n.x - nb.x);
+  const s = vertical ? Math.sign(n.y - nb.y) || 1 : Math.sign(n.x - nb.x) || 1;
+  if (vertical) return { x: n.x - ROOM_W / 2, y: s > 0 ? n.y : n.y - ROOM_D, w: ROOM_W, h: ROOM_D, cx: n.x, cy: n.y + s * ROOM_D / 2 };
+  return { x: s > 0 ? n.x : n.x - ROOM_D, y: n.y - ROOM_W / 2, w: ROOM_D, h: ROOM_W, cx: n.x + s * ROOM_D / 2, cy: n.y };
+}
+function rectSvg(r, P, attrs) {
+  const [x, y] = P(r.x, r.y + r.h);
+  return `<rect x="${x}" y="${y}" width="${r.w * U}" height="${r.h * U}" ${attrs}/>`;
+}
+
+function liftBadge(n) {             // lift symbol sits beside the corridor, on the side with most free space
+  const rooms = S.graph.nodes.filter(m => m.floor === n.floor && m.kind === 'room');
+  const clearance = sgn => Math.min(...rooms.map(m => Math.hypot(m.x - n.x, m.y - (n.y + sgn * 2.4))));
+  const side = clearance(-1) >= clearance(1) ? -1 : 1;
+  return [n.x, n.y + side * 2.6];
+}
+function stairsRect(n) {
+  const nb = S.edges.find(e => e.type === 'corridor' && (e.u === n.id || e.v === n.id));
+  const other = nb ? node(nb.u === n.id ? nb.v : nb.u) : { x: n.x, y: n.y + 1 };
+  const sgn = Math.sign(n.y - other.y) || -1;
+  return { x: n.x - STAIRS_W / 2, y: sgn > 0 ? n.y : n.y - STAIRS_D, w: STAIRS_W, h: STAIRS_D, sgn };
+}
+function transitionAnchor(n) {       // where the route line ends / the floor-change pill points (metres)
+  if (n.kind === 'lift') return liftBadge(n);
+  if (n.kind === 'stairs') { const r = stairsRect(n); return [n.x, r.y + r.h / 2]; }
+  return [n.x, n.y];
+}
+
+function renderFloorTabs() {
+  const routeFloors = new Set(S.route && S.route.route_found ? S.route.floors : []);
+  $('floorTabs').innerHTML = floorsOf().map(f =>
+    `<button data-floor="${f}" aria-pressed="${f === S.floor}" class="${routeFloors.has(f) ? 'has-route' : ''}"
+       aria-label="Floor ${f}${routeFloors.has(f) ? ' (route)' : ''}">${f === 0 ? "Ground" : "Floor " + f}</button>`).join('');
+}
+
+function renderMap() {
+  if (!S.graph) return;
+  renderFloorTabs();
+  const G = geometry(), P = G.P, f = S.floor;
+  const onFloor = n => n.floor === f;
+  const floorEdges = S.edges.filter(e => e.type !== 'lift' && e.type !== 'stairs' && node(e.u).floor === f && node(e.v).floor === f);
+  const svg = $('map');
+  svg.setAttribute('viewBox', `0 0 ${G.W.toFixed(0)} ${G.H.toFixed(0)}`);
+  let s = '';
+
+  // building shell
+  s += `<rect x="${U * 1.2}" y="${U * 1.2}" width="${G.W - U * 2.4}" height="${G.H - U * 2.4}" rx="${U * .8}" fill="#fbfcfd" stroke="var(--wall)" stroke-width="2"/>`;
+
+  // corridors (outline then fill, so joins look like one walkway)
+  ['outline', 'fill'].forEach(pass => floorEdges.forEach(e => {
+    const w = (e.type === 'door' ? SPUR_W : CORRIDOR_W) * U + (pass === 'outline' ? 3 : 0);
+    s += `<polyline points="${polyline(edgePoints(e), P)}" fill="none" stroke="${pass === 'outline' ? 'var(--corridor-edge)' : 'var(--corridor)'}"
+            stroke-width="${w}" stroke-linejoin="round" stroke-linecap="${e.type === 'door' ? 'butt' : 'square'}"/>`;
+  }));
+
+  // rooms
+  S.graph.nodes.filter(n => onFloor(n) && n.kind === 'room').forEach(n => {
+    const r = roomRect(n), isDest = n.id === S.dest;
+    const [cx, cy] = P(r.cx, r.cy);
+    const [cat, ...rest] = n.name.split(' ');
+    const code = n.name.split(' ').pop();
+    const label = n.category;
+    s += `<g class="clickable" data-dest="${esc(n.id)}" role="button" aria-label="${esc(n.name)}">`;
+    s += rectSvg(r, P, `rx="6" fill="${CATEGORY_TINT[n.category] || '#eef1f4'}" stroke="${isDest ? 'var(--dest)' : '#c9d2dc'}" stroke-width="${isDest ? 3 : 1.5}"`);
+    s += `<text x="${cx}" y="${cy - 3}" text-anchor="middle" font-size="12" fill="#4b5563">${esc(label)}</text>`;
+    s += `<text x="${cx}" y="${cy + 14}" text-anchor="middle" font-size="15" font-weight="700" fill="#1b2430">${esc(code)}</text></g>`;
+  });
+
+  // stairs blocks
+  S.graph.nodes.filter(n => onFloor(n) && n.kind === 'stairs').forEach(n => {
+    const r = stairsRect(n), sgn = r.sgn;
+    s += rectSvg(r, P, `rx="4" fill="#eef0f3" stroke="#aeb7c2" stroke-width="1.5"`);
+    for (let k = 1; k < 5; k++) {
+      const yy = r.y + (r.h * k) / 5, [x1, y1] = P(r.x + .4, yy), [x2] = P(r.x + r.w - .4, yy);
+      s += `<line x1="${x1}" y1="${y1}" x2="${x2}" y2="${y1}" stroke="#aeb7c2" stroke-width="1.5"/>`;
+    }
+    const [lx, ly] = P(n.x, r.y - .9 + (sgn > 0 ? r.h + 1.8 : 0));
+    s += `<text x="${lx}" y="${ly}" text-anchor="middle" font-size="12" fill="#4b5563">Stairs</text>`;
+  });
+
+  // entrance
+  S.graph.nodes.filter(n => onFloor(n) && n.kind === 'entrance').forEach(n => {
+    const [x, y] = P(n.x, n.y);
+    const wallX = U * 1.2;
+    s += `<rect x="${wallX - 1}" y="${y - CORRIDOR_W * U / 2 - 1.5}" width="${x - wallX + 1}" height="${CORRIDOR_W * U + 3}" fill="var(--corridor-edge)"/>`;
+    s += `<rect x="${wallX - 3}" y="${y - CORRIDOR_W * U / 2}" width="${x - wallX + 3}" height="${CORRIDOR_W * U}" fill="var(--corridor)"/>`;
+    s += `<path d="M${wallX - 20},${y} L${x - 6},${y}" stroke="#667281" stroke-width="2" marker-end="url(#arrow)"/>`;
+    s += `<text x="${wallX + 4}" y="${y - CORRIDOR_W * U / 2 - 8}" font-size="12" fill="#4b5563">Entrance</text>`;
+  });
+
+  // closures on this floor (corridors / doors)
+  floorEdges.filter(e => e.blocked).forEach(e => {
+    const pts = edgePoints(e);
+    s += `<polyline points="${polyline(pts, P)}" fill="none" stroke="var(--closed)" stroke-width="4" stroke-dasharray="8 6" stroke-linejoin="round"/>`;
+    const mid = pts[Math.floor(pts.length / 2) - (pts.length % 2 === 0 ? 1 : 0)], mid2 = pts[Math.floor(pts.length / 2)];
+    const [mx, my] = P((mid[0] + mid2[0]) / 2, (mid[1] + mid2[1]) / 2);
+    s += `<g><rect x="${mx - 26}" y="${my - 11}" width="52" height="22" rx="11" fill="var(--closed)"/><text x="${mx}" y="${my + 4}" text-anchor="middle" font-size="12" font-weight="700" fill="#fff">Closed</text></g>`;
+  });
+
+  // route on this floor
+  const r = S.route && S.route.route_found ? S.route : null;
+  if (r) {
+    const runs = []; let cur = null;
+    r.path.slice(1).forEach((v, i) => {
+      const u = r.path[i], e = edgeOf(u, v);
+      if (e.type === 'lift' || e.type === 'stairs') {
+        if (cur && node(u).floor === f) cur.push(transitionAnchor(node(u)));      // walk into the lift / stairs
+        cur = null; return;
+      }
+      if (node(u).floor !== f) { cur = null; return; }
+      const pts = edgePoints(e, u);
+      const prev = r.path[i - 1], pe = prev ? edgeOf(prev, u) : null;
+      if (!cur && pe && (pe.type === 'lift' || pe.type === 'stairs')) pts.unshift(transitionAnchor(node(u)));  // step out of it
+      if (!cur) { cur = pts.slice(); runs.push(cur); } else cur.push(...pts.slice(1));
+    });
+    const dim = S.stepIdx !== null;
+    runs.forEach(pts => {
+      s += `<polyline points="${polyline(pts, P)}" fill="none" stroke="#fff" stroke-width="12" stroke-linejoin="round" stroke-linecap="round"/>`;
+      s += `<polyline points="${polyline(pts, P)}" fill="none" stroke="var(--route)" stroke-opacity="${dim ? .35 : 1}" stroke-width="7" stroke-linejoin="round" stroke-linecap="round"/>`;
+    });
+    if (dim) {
+      const st = r.directions[S.stepIdx];
+      if (st.points && st.points.length && st.floor === f)
+        s += `<polyline points="${polyline(st.points, P)}" fill="none" stroke="var(--route-dark)" stroke-width="9" stroke-linejoin="round" stroke-linecap="round"/>`;
+      // Live position dot: interpolate along current segment
+      if (S.liveNav && st && st.floor === f) {
+        const pts = st.points && st.points.length ? st.points : null;
+        let lx, ly;
+        if (pts && pts.length >= 2) {
+          // Walk along the polyline proportional to distance covered
+          const segDist = st.distance_m || 1;
+          const frac = Math.min(1, S.liveDistWalked / segDist);
+          // total polyline length
+          let totalLen = 0;
+          const segs = pts.slice(1).map((p, i) => { const d = Math.hypot(p[0]-pts[i][0], p[1]-pts[i][1]); totalLen += d; return d; });
+          let target = frac * totalLen, acc = 0;
+          for (let i = 0; i < segs.length; i++) {
+            if (acc + segs[i] >= target || i === segs.length - 1) {
+              const t = segs[i] > 0 ? (target - acc) / segs[i] : 0;
+              lx = pts[i][0] + t * (pts[i+1][0] - pts[i][0]);
+              ly = pts[i][1] + t * (pts[i+1][1] - pts[i][1]);
+              break;
+            }
+            acc += segs[i];
+          }
+        } else {
+          // No points: use start node of current step
+          const stepNode = node(r.path[S.stepIdx] || r.source);
+          if (stepNode) { lx = stepNode.x; ly = stepNode.y; }
+        }
+        if (lx !== undefined) {
+          const [px, py] = P(lx, ly);
+          s += `<circle cx="${px}" cy="${py}" r="16" fill="var(--route)" opacity=".22" class="pulse"/>`;
+          s += `<circle cx="${px}" cy="${py}" r="8" fill="var(--route)" stroke="#fff" stroke-width="2.5"/>`;
+          s += `<text x="${px}" y="${py + 26}" text-anchor="middle" font-size="11" font-weight="700" fill="var(--route-dark)">You</text>`;
+        }
+      }
+    }
+  }
+
+  // lifts (drawn above the route so the symbol stays readable)
+  S.graph.nodes.filter(n => onFloor(n) && n.kind === 'lift').forEach(n => {
+    const liftEdge = S.edges.find(e => e.type === 'lift' && (e.u === n.id || e.v === n.id));
+    const out = liftEdge && liftEdge.blocked;
+    const [x, y] = P(...liftBadge(n));
+    const [nx0, ny0] = P(n.x, n.y);
+    s += `<line x1="${nx0}" y1="${ny0}" x2="${x}" y2="${y}" stroke="#c9b6ec" stroke-width="3"/>`;
+    s += `<rect x="${x - 17}" y="${y - 17}" width="34" height="34" rx="8" fill="${out ? '#fdecea' : '#f1ebfb'}" stroke="${out ? 'var(--closed)' : 'var(--lift)'}" stroke-width="2"/>`;
+    s += `<path d="M${x - 6},${y - 3} l6,-6 l6,6 M${x - 6},${y + 3} l6,6 l6,-6" fill="none" stroke="${out ? 'var(--closed)' : 'var(--lift)'}" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>`;
+    s += `<text x="${x - 24}" y="${y + 5}" text-anchor="end" font-size="12" fill="${out ? 'var(--closed)' : '#4b5563'}" font-weight="${out ? 700 : 400}">${out ? 'Lift out of service' : 'Lift'}</text>`;
+  });
+
+  // floor-change callouts
+  if (r) transitions(r).forEach(t => {
+    const fromHere = t.fromFloor === f, toHere = t.toFloor === f;
+    if (!fromHere && !toHere) return;
+    const at = node(fromHere ? t.from : t.to);
+    const [ax, ay] = P(...transitionAnchor(at));
+    const below = at.kind === 'stairs' ? STAIRS_D * U / 2 + 52 : 30;
+    const text = fromHere ? `${t.type === 'lift' ? 'Take lift' : 'Use stairs'} to Floor ${t.toFloor}  ›` : `Arrived from Floor ${t.fromFloor} by ${t.type}`;
+    const w = text.length * 7 + 22, bx = Math.min(Math.max(ax - w / 2, 8), G.W - w - 8), by = ay + below - 14;
+    s += `<g class="${fromHere ? 'clickable' : ''}" ${fromHere ? `data-goto-floor="${t.toFloor}" role="button" aria-label="${esc(text)}"` : ''}>
+      <rect x="${bx}" y="${by}" width="${w}" height="28" rx="14" fill="${fromHere ? 'var(--lift)' : '#fff'}" stroke="var(--lift)" stroke-width="2"/>
+      <text x="${bx + w / 2}" y="${by + 18.5}" text-anchor="middle" font-size="13" font-weight="700" fill="${fromHere ? '#fff' : 'var(--lift)'}">${esc(text)}</text></g>`;
+  });
+
+  // start + destination markers
+  const st = node(S.start);
+  if (st && st.floor === f) {
+    const [x, y] = P(st.x, st.y);
+    s += `<circle cx="${x}" cy="${y}" r="18" fill="var(--route)" class="pulse"/>`;
+    s += `<circle cx="${x}" cy="${y}" r="9" fill="var(--route)" stroke="#fff" stroke-width="3"/>`;
+    s += `<text x="${x}" y="${y + 30}" text-anchor="middle" font-size="12" font-weight="700" fill="var(--route-dark)">You are here</text>`;
+  }
+  const dn = node(S.dest);
+  if (dn && dn.floor === f) {
+    const [px, py] = P(dn.x, dn.y);
+    s += `<g transform="translate(${px},${py - 2})"><path d="M0,0 C-4,-9 -12,-14 -12,-23 a12,12 0 0 1 24,0 C12,-14 4,-9 0,0z" fill="var(--dest)" stroke="#fff" stroke-width="2"/><circle cx="0" cy="-23" r="4.5" fill="#fff"/></g>`;
+  }
+
+  // demo overlay: the raw graph
+  if (S.overlay) {
+    S.edges.forEach(e => {
+      const a = node(e.u), b = node(e.v);
+      if (a.floor !== f && b.floor !== f) return;
+      if (a.floor === f && b.floor === f) {
+        s += `<polyline points="${polyline(edgePoints(e), P)}" fill="none" stroke="${e.blocked ? '#d93025' : '#ff9f1c'}" stroke-width="1.5" stroke-dasharray="${e.type === 'door' ? '3 3' : ''}"/>`;
+      } else {
+        const here = a.floor === f ? a : b, other = a.floor === f ? b : a;
+        const [x, y] = P(here.x, here.y);
+        s += `<text x="${x + 12}" y="${y + 18}" font-size="10" fill="#b35c00">↕ ${esc(other.id)} (${e.type}, ${e.distance} m)</text>`;
+      }
+    });
+    S.graph.nodes.filter(onFloor).forEach(n => {
+      const [x, y] = P(n.x, n.y);
+      s += `<circle cx="${x}" cy="${y}" r="5" fill="#ff9f1c" stroke="#fff" stroke-width="1.5"/>`;
+      s += `<text x="${x + 7}" y="${y - 7}" font-size="10" font-weight="700" fill="#b35c00">${esc(n.id)}</text>`;
+    });
+  }
+
+  svg.innerHTML = `<defs><marker id="arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#667281"/></marker></defs>` + s;
+  svg.setAttribute('aria-label', `Floor ${f} plan` + (r ? `, showing the route to ${r.destination_name}` : ''));
+  $('mapCaption').textContent = `${S.campus.campus.name} · Floor ${f}`;
+  renderGraphInfo();
+}
+
+/* ======================================================================
+   Demo / technical view
+   ====================================================================== */
+function renderApiLog() {
+  $('apiLog').innerHTML = S.apiLog.map(l => `<tr><td>${l.t}</td><td><code>${esc(l.req)}</code></td><td>${l.status}</td><td>${l.ms}</td></tr>`).join('');
+}
+function renderGraphInfo() {
+  if (!S.graph) return;
+  const byType = {};
+  S.edges.forEach(e => { byType[e.type] = (byType[e.type] || 0) + 1; });
+  $('graphInfo').innerHTML = `<b>${S.graph.stats.nodes}</b> nodes, <b>${S.graph.stats.edges}</b> edges, floors ${S.graph.floors.join(', ')}.<br>` +
+    `Edges by type: ${Object.entries(byType).map(([k, v]) => `${k} ${v}`).join(', ')}. Stairs edges are marked not accessible.`;
+}
+function renderBlocked() {
+  const b = S.edges.filter(e => e.blocked);
+  $('blockedList').innerHTML = b.length ? 'Blocked edges: ' + b.map(e => `<code>${e.u}–${e.v}</code> (${e.type})`).join(', ') : 'No closures.';
+}
+function renderRouteInternals(previous) {
+  const r = S.route;
+  if (!r) { $('routeInternals').innerHTML = 'No route computed yet.'; $('rerouteDiff').innerHTML = ''; return; }
+  if (!r.route_found) {
+    $('routeInternals').innerHTML = `<b>route_found: false</b>${r.accessible_route_found === false ? ', accessible_route_found: false' : ''}<br>` +
+      `mode <code>${r.mode}</code>, algorithm <code>${r.algorithm}</code>, ${r.computation_time_ms} ms<br>${esc(r.message)}`;
+  } else {
+    const rows = r.path.slice(1).map((v, i) => {
+      const u = r.path[i], e = edgeOf(u, v);
+      return `<tr><td><code>${u}</code> → <code>${v}</code></td><td>${e.type}</td><td>${e.distance}</td><td>${e.turns}</td><td>${(e.distance + 2 * e.turns).toFixed(1)}</td></tr>`;
+    }).join('');
+    $('routeInternals').innerHTML = `Path: <code>${r.path.join(' → ')}</code><br>` +
+      `Algorithm <code>${r.algorithm}</code>, mode <code>${r.mode}</code>, total cost <b>${r.cost}</b>, ${r.distance_m} m, ${r.turns} turns, ` +
+      `computed in ${r.computation_time_ms} ms.` +
+      `<table><thead><tr><th>Edge</th><th>Type</th><th>m</th><th>Turns</th><th>Cost</th></tr></thead><tbody>${rows}</tbody></table>`;
+  }
+  if (previous && previous.path && (!r.path || previous.path.join() !== r.path.join()))
+    $('rerouteDiff').innerHTML = `Reroute: previous <code>${previous.path.join(' → ')}</code><br>now ${r.path ? `<code>${r.path.join(' → ')}</code>` : '<b>no feasible path</b>'}`;
+}
+
+async function refreshGraph() {
+  S.graph = await api('/api/graph');
+  S.edges = S.graph.edges;
+  S.nodes = Object.fromEntries(S.graph.nodes.map(n => [n.id, n]));
+  $('edgeSelect').innerHTML = S.edges.map(e => `<option value="${e.u}|${e.v}">${e.u} – ${e.v} (${e.type})</option>`).join('');
+  renderBlocked();
+}
+async function blockEdge(pair) {
+  const [u, v] = pair.split('|');
+  await api('/api/block', { u, v });
+  await refreshGraph();
+  if (S.request) await findRoute('closure'); else renderMap();
+}
+async function clearClosures() {
+  await api('/api/clear', {});
+  await refreshGraph();
+  if (S.request) await findRoute('reopen'); else { $('notice').innerHTML = ''; renderMap(); }
+}
+
+async function runLocalization() {
+  const id = $('scenarioSelect').value;
+  const r = await api('/api/localize/' + encodeURIComponent(id));
+  S.locResult = r;
+  $('raw').textContent = JSON.stringify(r, null, 2);
+  const rows = r.estimates.map(e => `<tr><td>${e.source}</td><td>${e.x.toFixed(2)}</td><td>${e.y.toFixed(2)}</td><td>${e.floor}</td><td>${e.confidence}</td><td>${r.fused.weights[e.source] ?? '–'}</td></tr>`).join('');
+  $('locDetails').innerHTML = `<table><thead><tr><th>Source</th><th>x</th><th>y</th><th>Floor</th><th>Confidence</th><th>Weight</th></tr></thead><tbody>${rows}
+    <tr><td><b>fused</b></td><td><b>${r.fused.x.toFixed(2)}</b></td><td><b>${r.fused.y.toFixed(2)}</b></td><td><b>${r.fused.floor}</b></td><td>${r.fused.confidence}</td><td></td></tr></tbody></table>
+    <div class="kv">True position (${r.true_position.x}, ${r.true_position.y}, floor ${r.true_position.floor}); error <b>${r.error_m} m</b>; snapped to node <code>${r.snapped_node}</code>, used as the route start.</div>
+    <div class="kv">${esc(r.note)}</div>`;
+  return r;
+}
+
+function setView(v) {
+  document.body.classList.toggle('demo-view', v === 'demo');
+  $('viewUser').setAttribute('aria-pressed', String(v !== 'demo'));
+  $('viewDemo').setAttribute('aria-pressed', String(v === 'demo'));
+  history.replaceState(null, '', v === 'demo' ? '#demo' : '#');
+  if (v !== 'demo' && S.overlay) { S.overlay = false; $('overlayToggle').checked = false; renderMap(); }
+}
+
+/* ======================================================================
+   Events
+   ====================================================================== */
+$('viewUser').onclick = () => setView('user');
+$('viewDemo').onclick = () => setView('demo');
+$('btnChangeStart').onclick = () => {
+  const sel = $('startSelect'); sel.hidden = !sel.hidden;
+  $('btnChangeStart').setAttribute('aria-expanded', String(!sel.hidden));
+  if (!sel.hidden) sel.focus();
+};
+$('startSelect').onchange = e => { setStart(e.target.value); $('startSelect').hidden = true; $('btnChangeStart').setAttribute('aria-expanded', 'false'); };
+$('btnLocate').onclick = async () => {
+  $('btnLocate').disabled = true; $('btnLocate').textContent = 'Locating…';
+  try {
+    const r = await runLocalization();
+    setStart(r.snapped_node, true);
+    $('locateHint').textContent = `Position estimated near ${r.snapped_node_name}.`;
+    $('locateHint').hidden = false;
+  } catch (err) { $('locateHint').textContent = 'Could not estimate your position. Choose your location instead.'; $('locateHint').hidden = false; }
+  finally { $('btnLocate').disabled = false; $('btnLocate').textContent = 'Locate me'; }
+};
+$('destSearch').oninput = e => { S.search = e.target.value; renderDestinations(); };
+$('catChips').onclick = e => { const b = e.target.closest('[data-cat]'); if (!b) return; S.category = b.dataset.cat; renderCategories(); renderDestinations(); };
+$('destList').onclick = e => { const b = e.target.closest('[data-dest]'); if (b) setDest(b.dataset.dest); };
+document.querySelectorAll('.mode').forEach(b => b.onclick = () => setMode(b.dataset.mode));
+$('btnFind').onclick = () => findRoute();
+$('routeCard').onclick = e => {
+  if (e.target.closest('#btnStartNav')) return goStep(0);
+  if (e.target.closest('#btnStartLive')) return startLiveNav();
+  if (e.target.closest('#btnDemoNav')) return startLiveNav(true);
+  if (e.target.closest('#btnConfirmFloor')) return confirmFloorTransition();
+  if (e.target.closest('#btnStopLive')) return stopLiveNav();
+  if (e.target.closest('#btnNext')) return goStep(S.stepIdx + 1);
+  if (e.target.closest('#btnPrev')) return goStep(S.stepIdx - 1);
+  const li = e.target.closest('[data-step]');
+  if (li) goStep(Number(li.dataset.step));
+};
+$('floorTabs').onclick = e => { const b = e.target.closest('[data-floor]'); if (b) { S.floor = Number(b.dataset.floor); renderMap(); } };
+$('map').addEventListener('click', e => {
+  const g = e.target.closest('[data-goto-floor]'); if (g) { S.floor = Number(g.dataset.gotoFloor); renderMap(); return; }
+  const d = e.target.closest('[data-dest]'); if (d) { setDest(d.dataset.dest); }
+});
+$('algoSelect').onchange = e => { S.algo = e.target.value; if (S.request) findRoute(); };
+$('btnCompare').onclick = async () => {
+  if (!S.start || !S.dest) { $('compareOut').textContent = 'Choose a destination first.'; return; }
+  const base = { source: S.start, destination: S.dest, mode: S.mode };
+  const [d, a] = [await api('/api/route', { ...base, algorithm: 'dijkstra' }), await api('/api/route', { ...base, algorithm: 'astar' })];
+  const same = JSON.stringify(d.path) === JSON.stringify(a.path);
+  $('compareOut').innerHTML = `Dijkstra: cost ${d.cost ?? '–'}, ${d.computation_time_ms} ms · A*: cost ${a.cost ?? '–'}, ${a.computation_time_ms} ms · ` +
+    `<b>${same ? 'identical path' : 'different paths'}</b>`;
+};
+document.querySelectorAll('[data-block]').forEach(b => b.onclick = () => blockEdge(b.dataset.block));
+$('btnBlock').onclick = () => blockEdge($('edgeSelect').value);
+$('btnClear').onclick = clearClosures;
+$('btnRunLoc').onclick = async () => { const r = await runLocalization(); setStart(r.snapped_node, true); $('locateHint').textContent = `Position estimated near ${r.snapped_node_name}.`; $('locateHint').hidden = false; };
+$('overlayToggle').onchange = e => { S.overlay = e.target.checked; renderMap(); };
+
+/* ======================================================================
+   Start-up
+   ====================================================================== */
+async function init() {
+  S.campus = await api('/api/campus');
+  $('buildingName').textContent = S.campus.building;
+  await refreshGraph();
+  $('startSelect').innerHTML = S.campus.start_points.map(p => `<option value="${esc(p.id)}">${esc(p.name)} – Floor ${p.floor}</option>`).join('');
+  $('scenarioSelect').innerHTML = S.campus.scenarios.map(([k, v]) => `<option value="${esc(k)}">${esc(v)}</option>`).join('');
+  S.start = S.campus.start_points[0].id;
+  renderHere(); renderCategories(); renderDestinations();
+  S.floor = node(S.start).floor;
+  renderMap();
+  setView(location.hash === '#demo' ? 'demo' : 'user');
+}
+init().catch(err => notice('warn', 'The navigation service is not reachable.', ' Start it with “python app.py” and reload this page.'));
+</script>
+<script>
+// Clear disclosure: browser sensors cannot provide verified indoor coordinates.
+window.addEventListener('DOMContentLoaded',()=>{
+ const bar=document.createElement('aside');bar.style.cssText='padding:10px 18px;background:#e8f2ff;color:#21476e;text-align:center;font-size:13px';
+ bar.textContent='Illustrative VIT-style floor plans, not official building maps. Indoor location is not verified; use manual steps, QR correction or demo mode.';
+ document.body.prepend(bar);
+ const controls=document.createElement('div');controls.style.cssText='display:flex;flex-wrap:wrap;gap:7px;padding:12px;justify-content:center';
+ controls.innerHTML='<strong style="align-self:center">Find nearest:</strong> <button data-near="Washroom">🚻 Washroom</button> <button data-near="Accessible Washroom">♿ Accessible washroom</button> <button data-near="Canteen">🍴 Canteen</button> <button data-near="lift">🛗 Lift</button>';
+ bar.after(controls);
+ controls.addEventListener('click',async e=>{const cat=e.target.dataset.near;if(!cat)return;
+ try{if(cat==='lift'){const from=S.start||'ENTRANCE';const candidates=Object.values(S.nodes).filter(n=>n.kind==='lift');const routes=await Promise.all(candidates.map(n=>api('/api/route',{source:from,destination:n.id,mode:S.mode})));const r=routes.filter(r=>r.route_found).sort((a,b)=>a.distance_m-b.distance_m)[0];if(!r)throw Error('No lift is reachable');S.dest=r.destination;await findRoute();return;}
+ const x=await api('/api/facilities/nearest?source='+encodeURIComponent(S.start||'ENTRANCE')+'&category='+encodeURIComponent(cat)+'&mode='+encodeURIComponent(S.mode));if(!x.route_found)throw Error(x.message);S.dest=x.destination.id;S.category='All';renderCategories();renderDestinations();await findRoute();}
+ catch(err){alert(err.message)} });
+});
+</script></body>
+</html>

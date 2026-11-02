@@ -1,0 +1,350 @@
+{
+  "schema_version": "1.0",
+  "campus": {
+    "id": "VIT_VELLORE",
+    "name": "VIT Vellore",
+    "note": "Manually constructed VIT-style sample building for the Review-2 prototype. Not an official VIT floor plan."
+  },
+  "buildings": [
+    {
+      "id": "SAMPLE_BLOCK",
+      "name": "Sample Academic Block",
+      "floors": [
+        {
+          "level": 1,
+          "name": "Floor 1",
+          "locations": [
+            {
+              "id": "ENTRANCE",
+              "kind": "entrance",
+              "name": "Main Entrance",
+              "x": 0,
+              "y": 0
+            },
+            {
+              "id": "J1_LOBBY",
+              "kind": "junction",
+              "name": "Floor 1 Lobby",
+              "x": 6,
+              "y": 0
+            },
+            {
+              "id": "J1_MID",
+              "kind": "junction",
+              "name": "Floor 1 Mid Corridor",
+              "x": 18,
+              "y": 0
+            },
+            {
+              "id": "LIFT_1",
+              "kind": "lift",
+              "name": "Lift Lobby (Floor 1)",
+              "x": 22,
+              "y": 0
+            },
+            {
+              "id": "J1_END",
+              "kind": "junction",
+              "name": "Floor 1 East End",
+              "x": 26,
+              "y": 0
+            },
+            {
+              "id": "STAIRS_1",
+              "kind": "stairs",
+              "name": "Staircase (Floor 1)",
+              "x": 26,
+              "y": -5
+            },
+            {
+              "id": "R101",
+              "kind": "room",
+              "category": "Classroom",
+              "name": "Classroom C101",
+              "x": 6,
+              "y": 5
+            },
+            {
+              "id": "R102",
+              "kind": "room",
+              "category": "Laboratory",
+              "name": "Laboratory L102",
+              "x": 18,
+              "y": 5
+            },
+            {
+              "id": "R103",
+              "kind": "room",
+              "category": "Auditorium",
+              "name": "Auditorium A103",
+              "x": 18,
+              "y": -5
+            },
+            {
+              "id": "R104",
+              "kind": "room",
+              "category": "Office",
+              "name": "Office O104",
+              "x": 26,
+              "y": 5
+            }
+          ]
+        },
+        {
+          "level": 2,
+          "name": "Floor 2",
+          "locations": [
+            {
+              "id": "J2_LOBBY",
+              "kind": "junction",
+              "name": "Floor 2 Lobby",
+              "x": 6,
+              "y": 0
+            },
+            {
+              "id": "J2_MID",
+              "kind": "junction",
+              "name": "Floor 2 Mid Corridor",
+              "x": 18,
+              "y": 0
+            },
+            {
+              "id": "LIFT_2",
+              "kind": "lift",
+              "name": "Lift Lobby (Floor 2)",
+              "x": 22,
+              "y": 0
+            },
+            {
+              "id": "J2_END",
+              "kind": "junction",
+              "name": "Floor 2 East End",
+              "x": 26,
+              "y": 0
+            },
+            {
+              "id": "STAIRS_2",
+              "kind": "stairs",
+              "name": "Staircase (Floor 2)",
+              "x": 26,
+              "y": -5
+            },
+            {
+              "id": "R201",
+              "kind": "room",
+              "category": "Seminar Hall",
+              "name": "Seminar Hall S201",
+              "x": 6,
+              "y": 5
+            },
+            {
+              "id": "R202",
+              "kind": "room",
+              "category": "Classroom",
+              "name": "Classroom C202",
+              "x": 18,
+              "y": 5
+            },
+            {
+              "id": "R203",
+              "kind": "room",
+              "category": "Laboratory",
+              "name": "Laboratory L203",
+              "x": 18,
+              "y": -5
+            },
+            {
+              "id": "R204",
+              "kind": "room",
+              "category": "Shop / Facility",
+              "name": "Shop / Facility F204",
+              "x": 26,
+              "y": 5
+            }
+          ]
+        }
+      ],
+      "connections": [
+        {
+          "from": "ENTRANCE",
+          "to": "J1_LOBBY",
+          "type": "corridor",
+          "distance_m": 6,
+          "turns": 0
+        },
+        {
+          "from": "J1_LOBBY",
+          "to": "J1_MID",
+          "type": "corridor",
+          "distance_m": 12,
+          "turns": 0
+        },
+        {
+          "from": "J1_MID",
+          "to": "LIFT_1",
+          "type": "corridor",
+          "distance_m": 4,
+          "turns": 0
+        },
+        {
+          "from": "LIFT_1",
+          "to": "J1_END",
+          "type": "corridor",
+          "distance_m": 4,
+          "turns": 0
+        },
+        {
+          "from": "J1_LOBBY",
+          "to": "J1_END",
+          "type": "corridor",
+          "distance_m": 24,
+          "turns": 2,
+          "note": "back corridor (detour route); draw_path is a drawing hint only",
+          "draw_path": [
+            [
+              6,
+              -12
+            ],
+            [
+              31,
+              -12
+            ],
+            [
+              31,
+              0
+            ]
+          ]
+        },
+        {
+          "from": "J1_LOBBY",
+          "to": "R101",
+          "type": "door",
+          "distance_m": 5,
+          "turns": 1
+        },
+        {
+          "from": "J1_MID",
+          "to": "R102",
+          "type": "door",
+          "distance_m": 5,
+          "turns": 1
+        },
+        {
+          "from": "J1_MID",
+          "to": "R103",
+          "type": "door",
+          "distance_m": 5,
+          "turns": 1
+        },
+        {
+          "from": "J1_END",
+          "to": "R104",
+          "type": "door",
+          "distance_m": 5,
+          "turns": 1
+        },
+        {
+          "from": "J1_END",
+          "to": "STAIRS_1",
+          "type": "corridor",
+          "distance_m": 5,
+          "turns": 1
+        },
+        {
+          "from": "J2_LOBBY",
+          "to": "J2_MID",
+          "type": "corridor",
+          "distance_m": 12,
+          "turns": 0
+        },
+        {
+          "from": "J2_MID",
+          "to": "LIFT_2",
+          "type": "corridor",
+          "distance_m": 4,
+          "turns": 0
+        },
+        {
+          "from": "LIFT_2",
+          "to": "J2_END",
+          "type": "corridor",
+          "distance_m": 4,
+          "turns": 0
+        },
+        {
+          "from": "J2_LOBBY",
+          "to": "J2_END",
+          "type": "corridor",
+          "distance_m": 24,
+          "turns": 2,
+          "note": "back corridor (detour route); draw_path is a drawing hint only",
+          "draw_path": [
+            [
+              6,
+              -12
+            ],
+            [
+              31,
+              -12
+            ],
+            [
+              31,
+              0
+            ]
+          ]
+        },
+        {
+          "from": "J2_LOBBY",
+          "to": "R201",
+          "type": "door",
+          "distance_m": 5,
+          "turns": 1
+        },
+        {
+          "from": "J2_MID",
+          "to": "R202",
+          "type": "door",
+          "distance_m": 5,
+          "turns": 1
+        },
+        {
+          "from": "J2_MID",
+          "to": "R203",
+          "type": "door",
+          "distance_m": 5,
+          "turns": 1
+        },
+        {
+          "from": "J2_END",
+          "to": "R204",
+          "type": "door",
+          "distance_m": 5,
+          "turns": 1
+        },
+        {
+          "from": "J2_END",
+          "to": "STAIRS_2",
+          "type": "corridor",
+          "distance_m": 5,
+          "turns": 1
+        },
+        {
+          "from": "LIFT_1",
+          "to": "LIFT_2",
+          "type": "lift",
+          "distance_m": 4,
+          "turns": 1,
+          "note": "single lift serving both floors"
+        },
+        {
+          "from": "STAIRS_1",
+          "to": "STAIRS_2",
+          "type": "stairs",
+          "distance_m": 6,
+          "turns": 2,
+          "note": "switchback flight with one landing"
+        }
+      ]
+    }
+  ]
+}

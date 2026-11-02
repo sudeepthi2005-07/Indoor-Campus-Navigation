@@ -1,0 +1,2168 @@
+{
+  "schema_version": "1.0",
+  "campus": {
+    "id": "VIT_VELLORE",
+    "name": "VIT Vellore",
+    "note": "Room identities and names below are VERIFIED from VIT's official SJT infrastructure page (https://vit.ac.in/about/infrastructure/silver-jubilee-tower) and administrative-offices page (https://vit.ac.in/?p=3342), accessed 2026-10-25 -- see the accompanying research report. Corridor layout, coordinates, distances and turn counts are NOT surveyed: this is a single straight-corridor SCHEMATIC placeholder standing in for unmeasured geometry, not a real floor plan. The Seventh Floor was not listed on the source page (no rooms attached here; floor existence/numbering needs on-site confirmation). Replace coordinates and connections with real measurements per the report's Part 3/Part 6 before relying on this for real navigation."
+  },
+  "buildings": [
+    {
+      "id": "SJT",
+      "name": "Silver Jubilee Tower (SJT) -- verified rooms, schematic placeholder layout",
+      "floors": [
+        {
+          "level": 0,
+          "name": "Ground Floor",
+          "locations": [
+            {
+              "id": "ENTRANCE",
+              "kind": "entrance",
+              "name": "Main Entrance",
+              "x": 0,
+              "y": 0
+            },
+            {
+              "id": "J0_LOBBY",
+              "kind": "junction",
+              "name": "Ground Floor Lobby",
+              "x": 6,
+              "y": 0
+            },
+            {
+              "id": "LIFT_0",
+              "kind": "lift",
+              "name": "Lift Lobby (Floor 0)",
+              "x": 56,
+              "y": 0
+            },
+            {
+              "id": "J0_END",
+              "kind": "junction",
+              "name": "Floor 0 End",
+              "x": 60,
+              "y": 0
+            },
+            {
+              "id": "STAIRS_0",
+              "kind": "stairs",
+              "name": "Staircase (Floor 0)",
+              "x": 60,
+              "y": -5
+            },
+            {
+              "id": "J0_MID",
+              "kind": "junction",
+              "name": "Corridor Junction J0_MID",
+              "x": 11.0,
+              "y": 0
+            },
+            {
+              "id": "G07",
+              "kind": "room",
+              "category": "Classroom",
+              "name": "Smart Classroom (G07)",
+              "x": 11.0,
+              "y": 5
+            },
+            {
+              "id": "JR0_1",
+              "kind": "junction",
+              "name": "Corridor Junction JR0_1",
+              "x": 16.0,
+              "y": 0
+            },
+            {
+              "id": "G13",
+              "kind": "room",
+              "category": "Shop / Facility",
+              "name": "Canteen (Arasan) (G13)",
+              "x": 16.0,
+              "y": -5
+            },
+            {
+              "id": "JR0_2",
+              "kind": "junction",
+              "name": "Corridor Junction JR0_2",
+              "x": 21.0,
+              "y": 0
+            },
+            {
+              "id": "G17",
+              "kind": "room",
+              "category": "Laboratory",
+              "name": "Software Development & Management Lab (G17)",
+              "x": 21.0,
+              "y": 5
+            },
+            {
+              "id": "JR0_3",
+              "kind": "junction",
+              "name": "Corridor Junction JR0_3",
+              "x": 26.0,
+              "y": 0
+            },
+            {
+              "id": "G18",
+              "kind": "room",
+              "category": "Laboratory",
+              "name": "Embedded Systems & IoT Lab (G18)",
+              "x": 26.0,
+              "y": -5
+            },
+            {
+              "id": "JR0_4",
+              "kind": "junction",
+              "name": "Corridor Junction JR0_4",
+              "x": 31.0,
+              "y": 0
+            },
+            {
+              "id": "G18A",
+              "kind": "room",
+              "category": "Laboratory",
+              "name": "Image Processing Lab (G18A)",
+              "x": 31.0,
+              "y": 5
+            },
+            {
+              "id": "JR0_5",
+              "kind": "junction",
+              "name": "Corridor Junction JR0_5",
+              "x": 36.0,
+              "y": 0
+            },
+            {
+              "id": "G19",
+              "kind": "room",
+              "category": "Laboratory",
+              "name": "Mobile Application Development Lab (G19)",
+              "x": 36.0,
+              "y": -5
+            },
+            {
+              "id": "JR0_6",
+              "kind": "junction",
+              "name": "Corridor Junction JR0_6",
+              "x": 41.0,
+              "y": 0
+            },
+            {
+              "id": "G19A",
+              "kind": "room",
+              "category": "Laboratory",
+              "name": "Automation Lab (G19A)",
+              "x": 41.0,
+              "y": 5
+            },
+            {
+              "id": "JR0_7",
+              "kind": "junction",
+              "name": "Corridor Junction JR0_7",
+              "x": 46.0,
+              "y": 0
+            },
+            {
+              "id": "G20",
+              "kind": "room",
+              "category": "Laboratory",
+              "name": "Data Science Lab (G20)",
+              "x": 46.0,
+              "y": -5
+            },
+            {
+              "id": "JR0_8",
+              "kind": "junction",
+              "name": "Corridor Junction JR0_8",
+              "x": 51.0,
+              "y": 0
+            },
+            {
+              "id": "G22",
+              "kind": "room",
+              "category": "Office",
+              "name": "Dean's Office (G22)",
+              "x": 51.0,
+              "y": 5
+            }
+          ]
+        },
+        {
+          "level": 1,
+          "name": "First Floor",
+          "locations": [
+            {
+              "id": "J1_LOBBY",
+              "kind": "junction",
+              "name": "Floor 1 Lobby",
+              "x": 6,
+              "y": 0
+            },
+            {
+              "id": "LIFT_1",
+              "kind": "lift",
+              "name": "Lift Lobby (Floor 1)",
+              "x": 44,
+              "y": 0
+            },
+            {
+              "id": "J1_END",
+              "kind": "junction",
+              "name": "Floor 1 End",
+              "x": 48,
+              "y": 0
+            },
+            {
+              "id": "STAIRS_1",
+              "kind": "stairs",
+              "name": "Staircase (Floor 1)",
+              "x": 48,
+              "y": -5
+            },
+            {
+              "id": "J1_MID",
+              "kind": "junction",
+              "name": "Corridor Junction J1_MID",
+              "x": 10.8,
+              "y": 0
+            },
+            {
+              "id": "102",
+              "kind": "room",
+              "category": "Laboratory",
+              "name": "Chemistry Lab (SAS) (102)",
+              "x": 10.8,
+              "y": 5
+            },
+            {
+              "id": "JR1_1",
+              "kind": "junction",
+              "name": "Corridor Junction JR1_1",
+              "x": 15.5,
+              "y": 0
+            },
+            {
+              "id": "107",
+              "kind": "room",
+              "category": "Classroom",
+              "name": "Smart Classroom (107)",
+              "x": 15.5,
+              "y": -5
+            },
+            {
+              "id": "JR1_2",
+              "kind": "junction",
+              "name": "Corridor Junction JR1_2",
+              "x": 20.2,
+              "y": 0
+            },
+            {
+              "id": "108",
+              "kind": "room",
+              "category": "Classroom",
+              "name": "Smart Classroom (108)",
+              "x": 20.2,
+              "y": 5
+            },
+            {
+              "id": "JR1_3",
+              "kind": "junction",
+              "name": "Corridor Junction JR1_3",
+              "x": 25.0,
+              "y": 0
+            },
+            {
+              "id": "119",
+              "kind": "room",
+              "category": "Laboratory",
+              "name": "Programming Languages Lab (119)",
+              "x": 25.0,
+              "y": -5
+            },
+            {
+              "id": "JR1_4",
+              "kind": "junction",
+              "name": "Corridor Junction JR1_4",
+              "x": 29.8,
+              "y": 0
+            },
+            {
+              "id": "120",
+              "kind": "room",
+              "category": "Laboratory",
+              "name": "Machine Learning Lab (120)",
+              "x": 29.8,
+              "y": 5
+            },
+            {
+              "id": "JR1_5",
+              "kind": "junction",
+              "name": "Corridor Junction JR1_5",
+              "x": 34.5,
+              "y": 0
+            },
+            {
+              "id": "121",
+              "kind": "room",
+              "category": "Laboratory",
+              "name": "Operating Systems Lab (121)",
+              "x": 34.5,
+              "y": -5
+            },
+            {
+              "id": "JR1_6",
+              "kind": "junction",
+              "name": "Corridor Junction JR1_6",
+              "x": 39.2,
+              "y": 0
+            },
+            {
+              "id": "122",
+              "kind": "room",
+              "category": "Laboratory",
+              "name": "Software Testing & Verification Lab (122)",
+              "x": 39.2,
+              "y": 5
+            }
+          ]
+        },
+        {
+          "level": 2,
+          "name": "Second Floor",
+          "locations": [
+            {
+              "id": "J2_LOBBY",
+              "kind": "junction",
+              "name": "Floor 2 Lobby",
+              "x": 6,
+              "y": 0
+            },
+            {
+              "id": "LIFT_2",
+              "kind": "lift",
+              "name": "Lift Lobby (Floor 2)",
+              "x": 44,
+              "y": 0
+            },
+            {
+              "id": "J2_END",
+              "kind": "junction",
+              "name": "Floor 2 End",
+              "x": 48,
+              "y": 0
+            },
+            {
+              "id": "STAIRS_2",
+              "kind": "stairs",
+              "name": "Staircase (Floor 2)",
+              "x": 48,
+              "y": -5
+            },
+            {
+              "id": "J2_MID",
+              "kind": "junction",
+              "name": "Corridor Junction J2_MID",
+              "x": 10.8,
+              "y": 0
+            },
+            {
+              "id": "203",
+              "kind": "room",
+              "category": "Laboratory",
+              "name": "Digital System Design Lab (203)",
+              "x": 10.8,
+              "y": 5
+            },
+            {
+              "id": "JR2_1",
+              "kind": "junction",
+              "name": "Corridor Junction JR2_1",
+              "x": 15.5,
+              "y": 0
+            },
+            {
+              "id": "207",
+              "kind": "room",
+              "category": "Laboratory",
+              "name": "Communication Engineering & Analog Circuits Lab (207)",
+              "x": 15.5,
+              "y": -5
+            },
+            {
+              "id": "JR2_2",
+              "kind": "junction",
+              "name": "Corridor Junction JR2_2",
+              "x": 20.2,
+              "y": 0
+            },
+            {
+              "id": "212",
+              "kind": "room",
+              "category": "Laboratory",
+              "name": "Embedded Systems & IoT Lab (212)",
+              "x": 20.2,
+              "y": 5
+            },
+            {
+              "id": "JR2_3",
+              "kind": "junction",
+              "name": "Corridor Junction JR2_3",
+              "x": 25.0,
+              "y": 0
+            },
+            {
+              "id": "216",
+              "kind": "room",
+              "category": "Laboratory",
+              "name": "Web Development Lab (216)",
+              "x": 25.0,
+              "y": -5
+            },
+            {
+              "id": "JR2_4",
+              "kind": "junction",
+              "name": "Corridor Junction JR2_4",
+              "x": 29.8,
+              "y": 0
+            },
+            {
+              "id": "217",
+              "kind": "room",
+              "category": "Laboratory",
+              "name": "Information & Network Security Lab (217)",
+              "x": 29.8,
+              "y": 5
+            },
+            {
+              "id": "JR2_5",
+              "kind": "junction",
+              "name": "Corridor Junction JR2_5",
+              "x": 34.5,
+              "y": 0
+            },
+            {
+              "id": "218",
+              "kind": "room",
+              "category": "Laboratory",
+              "name": "Artificial Intelligence Lab (218)",
+              "x": 34.5,
+              "y": -5
+            },
+            {
+              "id": "JR2_6",
+              "kind": "junction",
+              "name": "Corridor Junction JR2_6",
+              "x": 39.2,
+              "y": 0
+            },
+            {
+              "id": "219",
+              "kind": "room",
+              "category": "Laboratory",
+              "name": "Computer Vision Lab (219)",
+              "x": 39.2,
+              "y": 5
+            }
+          ]
+        },
+        {
+          "level": 3,
+          "name": "Third Floor",
+          "locations": [
+            {
+              "id": "J3_LOBBY",
+              "kind": "junction",
+              "name": "Floor 3 Lobby",
+              "x": 6,
+              "y": 0
+            },
+            {
+              "id": "LIFT_3",
+              "kind": "lift",
+              "name": "Lift Lobby (Floor 3)",
+              "x": 44,
+              "y": 0
+            },
+            {
+              "id": "J3_END",
+              "kind": "junction",
+              "name": "Floor 3 End",
+              "x": 48,
+              "y": 0
+            },
+            {
+              "id": "STAIRS_3",
+              "kind": "stairs",
+              "name": "Staircase (Floor 3)",
+              "x": 48,
+              "y": -5
+            },
+            {
+              "id": "J3_MID",
+              "kind": "junction",
+              "name": "Corridor Junction J3_MID",
+              "x": 10.8,
+              "y": 0
+            },
+            {
+              "id": "307A",
+              "kind": "room",
+              "category": "Office",
+              "name": "Centre for Technical Support (307A)",
+              "x": 10.8,
+              "y": 5
+            },
+            {
+              "id": "JR3_1",
+              "kind": "junction",
+              "name": "Corridor Junction JR3_1",
+              "x": 15.5,
+              "y": 0
+            },
+            {
+              "id": "312",
+              "kind": "room",
+              "category": "Laboratory",
+              "name": "Art & Digital Lab (312)",
+              "x": 15.5,
+              "y": -5
+            },
+            {
+              "id": "JR3_2",
+              "kind": "junction",
+              "name": "Corridor Junction JR3_2",
+              "x": 20.2,
+              "y": 0
+            },
+            {
+              "id": "316",
+              "kind": "room",
+              "category": "Laboratory",
+              "name": "Computer Engineering Lab (316)",
+              "x": 20.2,
+              "y": 5
+            },
+            {
+              "id": "JR3_3",
+              "kind": "junction",
+              "name": "Corridor Junction JR3_3",
+              "x": 25.0,
+              "y": 0
+            },
+            {
+              "id": "317",
+              "kind": "room",
+              "category": "Laboratory",
+              "name": "Open Source Technology Lab (317)",
+              "x": 25.0,
+              "y": -5
+            },
+            {
+              "id": "JR3_4",
+              "kind": "junction",
+              "name": "Corridor Junction JR3_4",
+              "x": 29.8,
+              "y": 0
+            },
+            {
+              "id": "318",
+              "kind": "room",
+              "category": "Laboratory",
+              "name": "Data Analytics Lab (318)",
+              "x": 29.8,
+              "y": 5
+            },
+            {
+              "id": "JR3_5",
+              "kind": "junction",
+              "name": "Corridor Junction JR3_5",
+              "x": 34.5,
+              "y": 0
+            },
+            {
+              "id": "319",
+              "kind": "room",
+              "category": "Laboratory",
+              "name": "Information Security Lab (319)",
+              "x": 34.5,
+              "y": -5
+            },
+            {
+              "id": "JR3_6",
+              "kind": "junction",
+              "name": "Corridor Junction JR3_6",
+              "x": 39.2,
+              "y": 0
+            },
+            {
+              "id": "321",
+              "kind": "room",
+              "category": "Office",
+              "name": "Dean's Office (321)",
+              "x": 39.2,
+              "y": 5
+            }
+          ]
+        },
+        {
+          "level": 4,
+          "name": "Fourth Floor",
+          "locations": [
+            {
+              "id": "J4_LOBBY",
+              "kind": "junction",
+              "name": "Floor 4 Lobby",
+              "x": 6,
+              "y": 0
+            },
+            {
+              "id": "LIFT_4",
+              "kind": "lift",
+              "name": "Lift Lobby (Floor 4)",
+              "x": 32,
+              "y": 0
+            },
+            {
+              "id": "J4_END",
+              "kind": "junction",
+              "name": "Floor 4 End",
+              "x": 36,
+              "y": 0
+            },
+            {
+              "id": "STAIRS_4",
+              "kind": "stairs",
+              "name": "Staircase (Floor 4)",
+              "x": 36,
+              "y": -5
+            },
+            {
+              "id": "J4_MID",
+              "kind": "junction",
+              "name": "Corridor Junction J4_MID",
+              "x": 10.3,
+              "y": 0
+            },
+            {
+              "id": "412",
+              "kind": "room",
+              "category": "Shop / Facility",
+              "name": "Homi Bhabha Gallery (412)",
+              "x": 10.3,
+              "y": 5
+            },
+            {
+              "id": "JR4_1",
+              "kind": "junction",
+              "name": "Corridor Junction JR4_1",
+              "x": 14.7,
+              "y": 0
+            },
+            {
+              "id": "416",
+              "kind": "room",
+              "category": "Laboratory",
+              "name": "Cloud Computing Lab (416)",
+              "x": 14.7,
+              "y": -5
+            },
+            {
+              "id": "JR4_2",
+              "kind": "junction",
+              "name": "Corridor Junction JR4_2",
+              "x": 19.0,
+              "y": 0
+            },
+            {
+              "id": "417",
+              "kind": "room",
+              "category": "Laboratory",
+              "name": "Software Systems Lab (417)",
+              "x": 19.0,
+              "y": 5
+            },
+            {
+              "id": "JR4_3",
+              "kind": "junction",
+              "name": "Corridor Junction JR4_3",
+              "x": 23.3,
+              "y": 0
+            },
+            {
+              "id": "418",
+              "kind": "room",
+              "category": "Laboratory",
+              "name": "Computational Intelligence Lab (418)",
+              "x": 23.3,
+              "y": -5
+            },
+            {
+              "id": "JR4_4",
+              "kind": "junction",
+              "name": "Corridor Junction JR4_4",
+              "x": 27.7,
+              "y": 0
+            },
+            {
+              "id": "419",
+              "kind": "room",
+              "category": "Laboratory",
+              "name": "Image Processing & Graphics Lab (419)",
+              "x": 27.7,
+              "y": 5
+            }
+          ]
+        },
+        {
+          "level": 5,
+          "name": "Fifth Floor",
+          "locations": [
+            {
+              "id": "J5_LOBBY",
+              "kind": "junction",
+              "name": "Floor 5 Lobby",
+              "x": 6,
+              "y": 0
+            },
+            {
+              "id": "LIFT_5",
+              "kind": "lift",
+              "name": "Lift Lobby (Floor 5)",
+              "x": 26,
+              "y": 0
+            },
+            {
+              "id": "J5_END",
+              "kind": "junction",
+              "name": "Floor 5 End",
+              "x": 30,
+              "y": 0
+            },
+            {
+              "id": "STAIRS_5",
+              "kind": "stairs",
+              "name": "Staircase (Floor 5)",
+              "x": 30,
+              "y": -5
+            },
+            {
+              "id": "J5_MID",
+              "kind": "junction",
+              "name": "Corridor Junction J5_MID",
+              "x": 10.0,
+              "y": 0
+            },
+            {
+              "id": "515",
+              "kind": "room",
+              "category": "Laboratory",
+              "name": "Intel Multicore Lab (515)",
+              "x": 10.0,
+              "y": 5
+            },
+            {
+              "id": "JR5_1",
+              "kind": "junction",
+              "name": "Corridor Junction JR5_1",
+              "x": 14.0,
+              "y": 0
+            },
+            {
+              "id": "516",
+              "kind": "room",
+              "category": "Laboratory",
+              "name": "VIT-Accenture Innovation Lab (516)",
+              "x": 14.0,
+              "y": -5
+            },
+            {
+              "id": "JR5_2",
+              "kind": "junction",
+              "name": "Corridor Junction JR5_2",
+              "x": 18.0,
+              "y": 0
+            },
+            {
+              "id": "517",
+              "kind": "room",
+              "category": "Laboratory",
+              "name": "AI and Machine Learning Lab (517)",
+              "x": 18.0,
+              "y": 5
+            },
+            {
+              "id": "JR5_3",
+              "kind": "junction",
+              "name": "Corridor Junction JR5_3",
+              "x": 22.0,
+              "y": 0
+            },
+            {
+              "id": "520",
+              "kind": "room",
+              "category": "Laboratory",
+              "name": "Analog and Digital Circuits Hardware Lab (520)",
+              "x": 22.0,
+              "y": -5
+            }
+          ]
+        },
+        {
+          "level": 6,
+          "name": "Sixth Floor",
+          "locations": [
+            {
+              "id": "J6_LOBBY",
+              "kind": "junction",
+              "name": "Floor 6 Lobby",
+              "x": 6,
+              "y": 0
+            },
+            {
+              "id": "LIFT_6",
+              "kind": "lift",
+              "name": "Lift Lobby (Floor 6)",
+              "x": 32,
+              "y": 0
+            },
+            {
+              "id": "J6_END",
+              "kind": "junction",
+              "name": "Floor 6 End",
+              "x": 36,
+              "y": 0
+            },
+            {
+              "id": "STAIRS_6",
+              "kind": "stairs",
+              "name": "Staircase (Floor 6)",
+              "x": 36,
+              "y": -5
+            },
+            {
+              "id": "J6_MID",
+              "kind": "junction",
+              "name": "Corridor Junction J6_MID",
+              "x": 10.3,
+              "y": 0
+            },
+            {
+              "id": "614",
+              "kind": "room",
+              "category": "Shop / Facility",
+              "name": "Sarojini Naidu Gallery (614)",
+              "x": 10.3,
+              "y": 5
+            },
+            {
+              "id": "JR6_1",
+              "kind": "junction",
+              "name": "Corridor Junction JR6_1",
+              "x": 14.7,
+              "y": 0
+            },
+            {
+              "id": "620",
+              "kind": "room",
+              "category": "Laboratory",
+              "name": "Mathematics Computing Lab (620)",
+              "x": 14.7,
+              "y": -5
+            },
+            {
+              "id": "JR6_2",
+              "kind": "junction",
+              "name": "Corridor Junction JR6_2",
+              "x": 19.0,
+              "y": 0
+            },
+            {
+              "id": "621",
+              "kind": "room",
+              "category": "Laboratory",
+              "name": "High Performance Computing Lab (621)",
+              "x": 19.0,
+              "y": 5
+            },
+            {
+              "id": "JR6_3",
+              "kind": "junction",
+              "name": "Corridor Junction JR6_3",
+              "x": 23.3,
+              "y": 0
+            },
+            {
+              "id": "622",
+              "kind": "room",
+              "category": "Laboratory",
+              "name": "Big Data Analysis Lab (622)",
+              "x": 23.3,
+              "y": -5
+            },
+            {
+              "id": "JR6_4",
+              "kind": "junction",
+              "name": "Corridor Junction JR6_4",
+              "x": 27.7,
+              "y": 0
+            },
+            {
+              "id": "624",
+              "kind": "room",
+              "category": "Office",
+              "name": "Dean's Office (624)",
+              "x": 27.7,
+              "y": 5
+            }
+          ]
+        },
+        {
+          "level": 7,
+          "name": "Seventh Floor",
+          "locations": [
+            {
+              "id": "J7_LOBBY",
+              "kind": "junction",
+              "name": "Floor 7 Lobby",
+              "x": 6,
+              "y": 0
+            },
+            {
+              "id": "LIFT_7",
+              "kind": "lift",
+              "name": "Lift Lobby (Floor 7)",
+              "x": 14,
+              "y": 0
+            },
+            {
+              "id": "J7_END",
+              "kind": "junction",
+              "name": "Floor 7 End",
+              "x": 18,
+              "y": 0
+            },
+            {
+              "id": "STAIRS_7",
+              "kind": "stairs",
+              "name": "Staircase (Floor 7)",
+              "x": 18,
+              "y": -5
+            }
+          ]
+        },
+        {
+          "level": 8,
+          "name": "Eighth Floor",
+          "locations": [
+            {
+              "id": "J8_LOBBY",
+              "kind": "junction",
+              "name": "Floor 8 Lobby",
+              "x": 6,
+              "y": 0
+            },
+            {
+              "id": "LIFT_8",
+              "kind": "lift",
+              "name": "Lift Lobby (Floor 8)",
+              "x": 38,
+              "y": 0
+            },
+            {
+              "id": "J8_END",
+              "kind": "junction",
+              "name": "Floor 8 End",
+              "x": 42,
+              "y": 0
+            },
+            {
+              "id": "STAIRS_8",
+              "kind": "stairs",
+              "name": "Staircase (Floor 8)",
+              "x": 42,
+              "y": -5
+            },
+            {
+              "id": "J8_MID",
+              "kind": "junction",
+              "name": "Corridor Junction J8_MID",
+              "x": 10.6,
+              "y": 0
+            },
+            {
+              "id": "806",
+              "kind": "room",
+              "category": "Laboratory",
+              "name": "Machine Intelligence and Cognitive Computing Lab (806)",
+              "x": 10.6,
+              "y": 5
+            },
+            {
+              "id": "JR8_1",
+              "kind": "junction",
+              "name": "Corridor Junction JR8_1",
+              "x": 15.1,
+              "y": 0
+            },
+            {
+              "id": "810",
+              "kind": "room",
+              "category": "Office",
+              "name": "Controller of Examinations (810)",
+              "x": 15.1,
+              "y": -5
+            },
+            {
+              "id": "JR8_2",
+              "kind": "junction",
+              "name": "Corridor Junction JR8_2",
+              "x": 19.7,
+              "y": 0
+            },
+            {
+              "id": "811",
+              "kind": "room",
+              "category": "Shop / Facility",
+              "name": "Bhagat Singh Gallery (811)",
+              "x": 19.7,
+              "y": 5
+            },
+            {
+              "id": "JR8_3",
+              "kind": "junction",
+              "name": "Corridor Junction JR8_3",
+              "x": 24.3,
+              "y": 0
+            },
+            {
+              "id": "812",
+              "kind": "room",
+              "category": "Office",
+              "name": "Director's Office (812)",
+              "x": 24.3,
+              "y": -5
+            },
+            {
+              "id": "JR8_4",
+              "kind": "junction",
+              "name": "Corridor Junction JR8_4",
+              "x": 28.9,
+              "y": 0
+            },
+            {
+              "id": "813",
+              "kind": "room",
+              "category": "Office",
+              "name": "Deputy Director's Office (813)",
+              "x": 28.9,
+              "y": 5
+            },
+            {
+              "id": "JR8_5",
+              "kind": "junction",
+              "name": "Corridor Junction JR8_5",
+              "x": 33.4,
+              "y": 0
+            },
+            {
+              "id": "820",
+              "kind": "room",
+              "category": "Office",
+              "name": "Academics Office (820)",
+              "x": 33.4,
+              "y": -5
+            }
+          ]
+        }
+      ],
+      "connections": [
+        {
+          "from": "ENTRANCE",
+          "to": "J0_LOBBY",
+          "type": "corridor",
+          "distance_m": 6,
+          "turns": 0
+        },
+        {
+          "from": "J0_LOBBY",
+          "to": "LIFT_0",
+          "type": "corridor",
+          "distance_m": 50,
+          "turns": 0
+        },
+        {
+          "from": "LIFT_0",
+          "to": "J0_END",
+          "type": "corridor",
+          "distance_m": 4,
+          "turns": 0
+        },
+        {
+          "from": "J0_END",
+          "to": "STAIRS_0",
+          "type": "corridor",
+          "distance_m": 5,
+          "turns": 1
+        },
+        {
+          "from": "J0_LOBBY",
+          "to": "J0_MID",
+          "type": "corridor",
+          "distance_m": 5.0,
+          "turns": 0
+        },
+        {
+          "from": "J0_MID",
+          "to": "G07",
+          "type": "door",
+          "distance_m": 5,
+          "turns": 1
+        },
+        {
+          "from": "J0_MID",
+          "to": "JR0_1",
+          "type": "corridor",
+          "distance_m": 5.0,
+          "turns": 0
+        },
+        {
+          "from": "JR0_1",
+          "to": "G13",
+          "type": "door",
+          "distance_m": 5,
+          "turns": 1
+        },
+        {
+          "from": "JR0_1",
+          "to": "JR0_2",
+          "type": "corridor",
+          "distance_m": 5.0,
+          "turns": 0
+        },
+        {
+          "from": "JR0_2",
+          "to": "G17",
+          "type": "door",
+          "distance_m": 5,
+          "turns": 1
+        },
+        {
+          "from": "JR0_2",
+          "to": "JR0_3",
+          "type": "corridor",
+          "distance_m": 5.0,
+          "turns": 0
+        },
+        {
+          "from": "JR0_3",
+          "to": "G18",
+          "type": "door",
+          "distance_m": 5,
+          "turns": 1
+        },
+        {
+          "from": "JR0_3",
+          "to": "JR0_4",
+          "type": "corridor",
+          "distance_m": 5.0,
+          "turns": 0
+        },
+        {
+          "from": "JR0_4",
+          "to": "G18A",
+          "type": "door",
+          "distance_m": 5,
+          "turns": 1
+        },
+        {
+          "from": "JR0_4",
+          "to": "JR0_5",
+          "type": "corridor",
+          "distance_m": 5.0,
+          "turns": 0
+        },
+        {
+          "from": "JR0_5",
+          "to": "G19",
+          "type": "door",
+          "distance_m": 5,
+          "turns": 1
+        },
+        {
+          "from": "JR0_5",
+          "to": "JR0_6",
+          "type": "corridor",
+          "distance_m": 5.0,
+          "turns": 0
+        },
+        {
+          "from": "JR0_6",
+          "to": "G19A",
+          "type": "door",
+          "distance_m": 5,
+          "turns": 1
+        },
+        {
+          "from": "JR0_6",
+          "to": "JR0_7",
+          "type": "corridor",
+          "distance_m": 5.0,
+          "turns": 0
+        },
+        {
+          "from": "JR0_7",
+          "to": "G20",
+          "type": "door",
+          "distance_m": 5,
+          "turns": 1
+        },
+        {
+          "from": "JR0_7",
+          "to": "JR0_8",
+          "type": "corridor",
+          "distance_m": 5.0,
+          "turns": 0
+        },
+        {
+          "from": "JR0_8",
+          "to": "G22",
+          "type": "door",
+          "distance_m": 5,
+          "turns": 1
+        },
+        {
+          "from": "JR0_8",
+          "to": "LIFT_0",
+          "type": "corridor",
+          "distance_m": 5.0,
+          "turns": 0
+        },
+        {
+          "from": "J1_LOBBY",
+          "to": "LIFT_1",
+          "type": "corridor",
+          "distance_m": 38,
+          "turns": 0
+        },
+        {
+          "from": "LIFT_1",
+          "to": "J1_END",
+          "type": "corridor",
+          "distance_m": 4,
+          "turns": 0
+        },
+        {
+          "from": "J1_END",
+          "to": "STAIRS_1",
+          "type": "corridor",
+          "distance_m": 5,
+          "turns": 1
+        },
+        {
+          "from": "J1_LOBBY",
+          "to": "J1_MID",
+          "type": "corridor",
+          "distance_m": 4.8,
+          "turns": 0
+        },
+        {
+          "from": "J1_MID",
+          "to": "102",
+          "type": "door",
+          "distance_m": 5,
+          "turns": 1
+        },
+        {
+          "from": "J1_MID",
+          "to": "JR1_1",
+          "type": "corridor",
+          "distance_m": 4.8,
+          "turns": 0
+        },
+        {
+          "from": "JR1_1",
+          "to": "107",
+          "type": "door",
+          "distance_m": 5,
+          "turns": 1
+        },
+        {
+          "from": "JR1_1",
+          "to": "JR1_2",
+          "type": "corridor",
+          "distance_m": 4.8,
+          "turns": 0
+        },
+        {
+          "from": "JR1_2",
+          "to": "108",
+          "type": "door",
+          "distance_m": 5,
+          "turns": 1
+        },
+        {
+          "from": "JR1_2",
+          "to": "JR1_3",
+          "type": "corridor",
+          "distance_m": 4.8,
+          "turns": 0
+        },
+        {
+          "from": "JR1_3",
+          "to": "119",
+          "type": "door",
+          "distance_m": 5,
+          "turns": 1
+        },
+        {
+          "from": "JR1_3",
+          "to": "JR1_4",
+          "type": "corridor",
+          "distance_m": 4.8,
+          "turns": 0
+        },
+        {
+          "from": "JR1_4",
+          "to": "120",
+          "type": "door",
+          "distance_m": 5,
+          "turns": 1
+        },
+        {
+          "from": "JR1_4",
+          "to": "JR1_5",
+          "type": "corridor",
+          "distance_m": 4.8,
+          "turns": 0
+        },
+        {
+          "from": "JR1_5",
+          "to": "121",
+          "type": "door",
+          "distance_m": 5,
+          "turns": 1
+        },
+        {
+          "from": "JR1_5",
+          "to": "JR1_6",
+          "type": "corridor",
+          "distance_m": 4.8,
+          "turns": 0
+        },
+        {
+          "from": "JR1_6",
+          "to": "122",
+          "type": "door",
+          "distance_m": 5,
+          "turns": 1
+        },
+        {
+          "from": "JR1_6",
+          "to": "LIFT_1",
+          "type": "corridor",
+          "distance_m": 4.8,
+          "turns": 0
+        },
+        {
+          "from": "J2_LOBBY",
+          "to": "LIFT_2",
+          "type": "corridor",
+          "distance_m": 38,
+          "turns": 0
+        },
+        {
+          "from": "LIFT_2",
+          "to": "J2_END",
+          "type": "corridor",
+          "distance_m": 4,
+          "turns": 0
+        },
+        {
+          "from": "J2_END",
+          "to": "STAIRS_2",
+          "type": "corridor",
+          "distance_m": 5,
+          "turns": 1
+        },
+        {
+          "from": "J2_LOBBY",
+          "to": "J2_MID",
+          "type": "corridor",
+          "distance_m": 4.8,
+          "turns": 0
+        },
+        {
+          "from": "J2_MID",
+          "to": "203",
+          "type": "door",
+          "distance_m": 5,
+          "turns": 1
+        },
+        {
+          "from": "J2_MID",
+          "to": "JR2_1",
+          "type": "corridor",
+          "distance_m": 4.8,
+          "turns": 0
+        },
+        {
+          "from": "JR2_1",
+          "to": "207",
+          "type": "door",
+          "distance_m": 5,
+          "turns": 1
+        },
+        {
+          "from": "JR2_1",
+          "to": "JR2_2",
+          "type": "corridor",
+          "distance_m": 4.8,
+          "turns": 0
+        },
+        {
+          "from": "JR2_2",
+          "to": "212",
+          "type": "door",
+          "distance_m": 5,
+          "turns": 1
+        },
+        {
+          "from": "JR2_2",
+          "to": "JR2_3",
+          "type": "corridor",
+          "distance_m": 4.8,
+          "turns": 0
+        },
+        {
+          "from": "JR2_3",
+          "to": "216",
+          "type": "door",
+          "distance_m": 5,
+          "turns": 1
+        },
+        {
+          "from": "JR2_3",
+          "to": "JR2_4",
+          "type": "corridor",
+          "distance_m": 4.8,
+          "turns": 0
+        },
+        {
+          "from": "JR2_4",
+          "to": "217",
+          "type": "door",
+          "distance_m": 5,
+          "turns": 1
+        },
+        {
+          "from": "JR2_4",
+          "to": "JR2_5",
+          "type": "corridor",
+          "distance_m": 4.8,
+          "turns": 0
+        },
+        {
+          "from": "JR2_5",
+          "to": "218",
+          "type": "door",
+          "distance_m": 5,
+          "turns": 1
+        },
+        {
+          "from": "JR2_5",
+          "to": "JR2_6",
+          "type": "corridor",
+          "distance_m": 4.8,
+          "turns": 0
+        },
+        {
+          "from": "JR2_6",
+          "to": "219",
+          "type": "door",
+          "distance_m": 5,
+          "turns": 1
+        },
+        {
+          "from": "JR2_6",
+          "to": "LIFT_2",
+          "type": "corridor",
+          "distance_m": 4.8,
+          "turns": 0
+        },
+        {
+          "from": "J3_LOBBY",
+          "to": "LIFT_3",
+          "type": "corridor",
+          "distance_m": 38,
+          "turns": 0
+        },
+        {
+          "from": "LIFT_3",
+          "to": "J3_END",
+          "type": "corridor",
+          "distance_m": 4,
+          "turns": 0
+        },
+        {
+          "from": "J3_END",
+          "to": "STAIRS_3",
+          "type": "corridor",
+          "distance_m": 5,
+          "turns": 1
+        },
+        {
+          "from": "J3_LOBBY",
+          "to": "J3_MID",
+          "type": "corridor",
+          "distance_m": 4.8,
+          "turns": 0
+        },
+        {
+          "from": "J3_MID",
+          "to": "307A",
+          "type": "door",
+          "distance_m": 5,
+          "turns": 1
+        },
+        {
+          "from": "J3_MID",
+          "to": "JR3_1",
+          "type": "corridor",
+          "distance_m": 4.8,
+          "turns": 0
+        },
+        {
+          "from": "JR3_1",
+          "to": "312",
+          "type": "door",
+          "distance_m": 5,
+          "turns": 1
+        },
+        {
+          "from": "JR3_1",
+          "to": "JR3_2",
+          "type": "corridor",
+          "distance_m": 4.8,
+          "turns": 0
+        },
+        {
+          "from": "JR3_2",
+          "to": "316",
+          "type": "door",
+          "distance_m": 5,
+          "turns": 1
+        },
+        {
+          "from": "JR3_2",
+          "to": "JR3_3",
+          "type": "corridor",
+          "distance_m": 4.8,
+          "turns": 0
+        },
+        {
+          "from": "JR3_3",
+          "to": "317",
+          "type": "door",
+          "distance_m": 5,
+          "turns": 1
+        },
+        {
+          "from": "JR3_3",
+          "to": "JR3_4",
+          "type": "corridor",
+          "distance_m": 4.8,
+          "turns": 0
+        },
+        {
+          "from": "JR3_4",
+          "to": "318",
+          "type": "door",
+          "distance_m": 5,
+          "turns": 1
+        },
+        {
+          "from": "JR3_4",
+          "to": "JR3_5",
+          "type": "corridor",
+          "distance_m": 4.8,
+          "turns": 0
+        },
+        {
+          "from": "JR3_5",
+          "to": "319",
+          "type": "door",
+          "distance_m": 5,
+          "turns": 1
+        },
+        {
+          "from": "JR3_5",
+          "to": "JR3_6",
+          "type": "corridor",
+          "distance_m": 4.8,
+          "turns": 0
+        },
+        {
+          "from": "JR3_6",
+          "to": "321",
+          "type": "door",
+          "distance_m": 5,
+          "turns": 1
+        },
+        {
+          "from": "JR3_6",
+          "to": "LIFT_3",
+          "type": "corridor",
+          "distance_m": 4.8,
+          "turns": 0
+        },
+        {
+          "from": "J4_LOBBY",
+          "to": "LIFT_4",
+          "type": "corridor",
+          "distance_m": 26,
+          "turns": 0
+        },
+        {
+          "from": "LIFT_4",
+          "to": "J4_END",
+          "type": "corridor",
+          "distance_m": 4,
+          "turns": 0
+        },
+        {
+          "from": "J4_END",
+          "to": "STAIRS_4",
+          "type": "corridor",
+          "distance_m": 5,
+          "turns": 1
+        },
+        {
+          "from": "J4_LOBBY",
+          "to": "J4_MID",
+          "type": "corridor",
+          "distance_m": 4.3,
+          "turns": 0
+        },
+        {
+          "from": "J4_MID",
+          "to": "412",
+          "type": "door",
+          "distance_m": 5,
+          "turns": 1
+        },
+        {
+          "from": "J4_MID",
+          "to": "JR4_1",
+          "type": "corridor",
+          "distance_m": 4.3,
+          "turns": 0
+        },
+        {
+          "from": "JR4_1",
+          "to": "416",
+          "type": "door",
+          "distance_m": 5,
+          "turns": 1
+        },
+        {
+          "from": "JR4_1",
+          "to": "JR4_2",
+          "type": "corridor",
+          "distance_m": 4.3,
+          "turns": 0
+        },
+        {
+          "from": "JR4_2",
+          "to": "417",
+          "type": "door",
+          "distance_m": 5,
+          "turns": 1
+        },
+        {
+          "from": "JR4_2",
+          "to": "JR4_3",
+          "type": "corridor",
+          "distance_m": 4.3,
+          "turns": 0
+        },
+        {
+          "from": "JR4_3",
+          "to": "418",
+          "type": "door",
+          "distance_m": 5,
+          "turns": 1
+        },
+        {
+          "from": "JR4_3",
+          "to": "JR4_4",
+          "type": "corridor",
+          "distance_m": 4.3,
+          "turns": 0
+        },
+        {
+          "from": "JR4_4",
+          "to": "419",
+          "type": "door",
+          "distance_m": 5,
+          "turns": 1
+        },
+        {
+          "from": "JR4_4",
+          "to": "LIFT_4",
+          "type": "corridor",
+          "distance_m": 4.3,
+          "turns": 0
+        },
+        {
+          "from": "J5_LOBBY",
+          "to": "LIFT_5",
+          "type": "corridor",
+          "distance_m": 20,
+          "turns": 0
+        },
+        {
+          "from": "LIFT_5",
+          "to": "J5_END",
+          "type": "corridor",
+          "distance_m": 4,
+          "turns": 0
+        },
+        {
+          "from": "J5_END",
+          "to": "STAIRS_5",
+          "type": "corridor",
+          "distance_m": 5,
+          "turns": 1
+        },
+        {
+          "from": "J5_LOBBY",
+          "to": "J5_MID",
+          "type": "corridor",
+          "distance_m": 4.0,
+          "turns": 0
+        },
+        {
+          "from": "J5_MID",
+          "to": "515",
+          "type": "door",
+          "distance_m": 5,
+          "turns": 1
+        },
+        {
+          "from": "J5_MID",
+          "to": "JR5_1",
+          "type": "corridor",
+          "distance_m": 4.0,
+          "turns": 0
+        },
+        {
+          "from": "JR5_1",
+          "to": "516",
+          "type": "door",
+          "distance_m": 5,
+          "turns": 1
+        },
+        {
+          "from": "JR5_1",
+          "to": "JR5_2",
+          "type": "corridor",
+          "distance_m": 4.0,
+          "turns": 0
+        },
+        {
+          "from": "JR5_2",
+          "to": "517",
+          "type": "door",
+          "distance_m": 5,
+          "turns": 1
+        },
+        {
+          "from": "JR5_2",
+          "to": "JR5_3",
+          "type": "corridor",
+          "distance_m": 4.0,
+          "turns": 0
+        },
+        {
+          "from": "JR5_3",
+          "to": "520",
+          "type": "door",
+          "distance_m": 5,
+          "turns": 1
+        },
+        {
+          "from": "JR5_3",
+          "to": "LIFT_5",
+          "type": "corridor",
+          "distance_m": 4.0,
+          "turns": 0
+        },
+        {
+          "from": "J6_LOBBY",
+          "to": "LIFT_6",
+          "type": "corridor",
+          "distance_m": 26,
+          "turns": 0
+        },
+        {
+          "from": "LIFT_6",
+          "to": "J6_END",
+          "type": "corridor",
+          "distance_m": 4,
+          "turns": 0
+        },
+        {
+          "from": "J6_END",
+          "to": "STAIRS_6",
+          "type": "corridor",
+          "distance_m": 5,
+          "turns": 1
+        },
+        {
+          "from": "J6_LOBBY",
+          "to": "J6_MID",
+          "type": "corridor",
+          "distance_m": 4.3,
+          "turns": 0
+        },
+        {
+          "from": "J6_MID",
+          "to": "614",
+          "type": "door",
+          "distance_m": 5,
+          "turns": 1
+        },
+        {
+          "from": "J6_MID",
+          "to": "JR6_1",
+          "type": "corridor",
+          "distance_m": 4.3,
+          "turns": 0
+        },
+        {
+          "from": "JR6_1",
+          "to": "620",
+          "type": "door",
+          "distance_m": 5,
+          "turns": 1
+        },
+        {
+          "from": "JR6_1",
+          "to": "JR6_2",
+          "type": "corridor",
+          "distance_m": 4.3,
+          "turns": 0
+        },
+        {
+          "from": "JR6_2",
+          "to": "621",
+          "type": "door",
+          "distance_m": 5,
+          "turns": 1
+        },
+        {
+          "from": "JR6_2",
+          "to": "JR6_3",
+          "type": "corridor",
+          "distance_m": 4.3,
+          "turns": 0
+        },
+        {
+          "from": "JR6_3",
+          "to": "622",
+          "type": "door",
+          "distance_m": 5,
+          "turns": 1
+        },
+        {
+          "from": "JR6_3",
+          "to": "JR6_4",
+          "type": "corridor",
+          "distance_m": 4.3,
+          "turns": 0
+        },
+        {
+          "from": "JR6_4",
+          "to": "624",
+          "type": "door",
+          "distance_m": 5,
+          "turns": 1
+        },
+        {
+          "from": "JR6_4",
+          "to": "LIFT_6",
+          "type": "corridor",
+          "distance_m": 4.3,
+          "turns": 0
+        },
+        {
+          "from": "J7_LOBBY",
+          "to": "LIFT_7",
+          "type": "corridor",
+          "distance_m": 8,
+          "turns": 0
+        },
+        {
+          "from": "LIFT_7",
+          "to": "J7_END",
+          "type": "corridor",
+          "distance_m": 4,
+          "turns": 0
+        },
+        {
+          "from": "J7_END",
+          "to": "STAIRS_7",
+          "type": "corridor",
+          "distance_m": 5,
+          "turns": 1
+        },
+        {
+          "from": "J7_LOBBY",
+          "to": "LIFT_7",
+          "type": "corridor",
+          "distance_m": 8,
+          "turns": 0
+        },
+        {
+          "from": "J8_LOBBY",
+          "to": "LIFT_8",
+          "type": "corridor",
+          "distance_m": 32,
+          "turns": 0
+        },
+        {
+          "from": "LIFT_8",
+          "to": "J8_END",
+          "type": "corridor",
+          "distance_m": 4,
+          "turns": 0
+        },
+        {
+          "from": "J8_END",
+          "to": "STAIRS_8",
+          "type": "corridor",
+          "distance_m": 5,
+          "turns": 1
+        },
+        {
+          "from": "J8_LOBBY",
+          "to": "J8_MID",
+          "type": "corridor",
+          "distance_m": 4.6,
+          "turns": 0
+        },
+        {
+          "from": "J8_MID",
+          "to": "806",
+          "type": "door",
+          "distance_m": 5,
+          "turns": 1
+        },
+        {
+          "from": "J8_MID",
+          "to": "JR8_1",
+          "type": "corridor",
+          "distance_m": 4.6,
+          "turns": 0
+        },
+        {
+          "from": "JR8_1",
+          "to": "810",
+          "type": "door",
+          "distance_m": 5,
+          "turns": 1
+        },
+        {
+          "from": "JR8_1",
+          "to": "JR8_2",
+          "type": "corridor",
+          "distance_m": 4.6,
+          "turns": 0
+        },
+        {
+          "from": "JR8_2",
+          "to": "811",
+          "type": "door",
+          "distance_m": 5,
+          "turns": 1
+        },
+        {
+          "from": "JR8_2",
+          "to": "JR8_3",
+          "type": "corridor",
+          "distance_m": 4.6,
+          "turns": 0
+        },
+        {
+          "from": "JR8_3",
+          "to": "812",
+          "type": "door",
+          "distance_m": 5,
+          "turns": 1
+        },
+        {
+          "from": "JR8_3",
+          "to": "JR8_4",
+          "type": "corridor",
+          "distance_m": 4.6,
+          "turns": 0
+        },
+        {
+          "from": "JR8_4",
+          "to": "813",
+          "type": "door",
+          "distance_m": 5,
+          "turns": 1
+        },
+        {
+          "from": "JR8_4",
+          "to": "JR8_5",
+          "type": "corridor",
+          "distance_m": 4.6,
+          "turns": 0
+        },
+        {
+          "from": "JR8_5",
+          "to": "820",
+          "type": "door",
+          "distance_m": 5,
+          "turns": 1
+        },
+        {
+          "from": "JR8_5",
+          "to": "LIFT_8",
+          "type": "corridor",
+          "distance_m": 4.6,
+          "turns": 0
+        },
+        {
+          "from": "LIFT_0",
+          "to": "LIFT_1",
+          "type": "lift",
+          "distance_m": 4,
+          "turns": 1,
+          "note": "single lift shaft serving all floors (placeholder travel distance)"
+        },
+        {
+          "from": "STAIRS_0",
+          "to": "STAIRS_1",
+          "type": "stairs",
+          "distance_m": 4.5,
+          "turns": 2,
+          "note": "stair flight between floors (placeholder travel distance)"
+        },
+        {
+          "from": "LIFT_1",
+          "to": "LIFT_2",
+          "type": "lift",
+          "distance_m": 4,
+          "turns": 1,
+          "note": "single lift shaft serving all floors (placeholder travel distance)"
+        },
+        {
+          "from": "STAIRS_1",
+          "to": "STAIRS_2",
+          "type": "stairs",
+          "distance_m": 4.5,
+          "turns": 2,
+          "note": "stair flight between floors (placeholder travel distance)"
+        },
+        {
+          "from": "LIFT_2",
+          "to": "LIFT_3",
+          "type": "lift",
+          "distance_m": 4,
+          "turns": 1,
+          "note": "single lift shaft serving all floors (placeholder travel distance)"
+        },
+        {
+          "from": "STAIRS_2",
+          "to": "STAIRS_3",
+          "type": "stairs",
+          "distance_m": 4.5,
+          "turns": 2,
+          "note": "stair flight between floors (placeholder travel distance)"
+        },
+        {
+          "from": "LIFT_3",
+          "to": "LIFT_4",
+          "type": "lift",
+          "distance_m": 4,
+          "turns": 1,
+          "note": "single lift shaft serving all floors (placeholder travel distance)"
+        },
+        {
+          "from": "STAIRS_3",
+          "to": "STAIRS_4",
+          "type": "stairs",
+          "distance_m": 4.5,
+          "turns": 2,
+          "note": "stair flight between floors (placeholder travel distance)"
+        },
+        {
+          "from": "LIFT_4",
+          "to": "LIFT_5",
+          "type": "lift",
+          "distance_m": 4,
+          "turns": 1,
+          "note": "single lift shaft serving all floors (placeholder travel distance)"
+        },
+        {
+          "from": "STAIRS_4",
+          "to": "STAIRS_5",
+          "type": "stairs",
+          "distance_m": 4.5,
+          "turns": 2,
+          "note": "stair flight between floors (placeholder travel distance)"
+        },
+        {
+          "from": "LIFT_5",
+          "to": "LIFT_6",
+          "type": "lift",
+          "distance_m": 4,
+          "turns": 1,
+          "note": "single lift shaft serving all floors (placeholder travel distance)"
+        },
+        {
+          "from": "STAIRS_5",
+          "to": "STAIRS_6",
+          "type": "stairs",
+          "distance_m": 4.5,
+          "turns": 2,
+          "note": "stair flight between floors (placeholder travel distance)"
+        },
+        {
+          "from": "LIFT_6",
+          "to": "LIFT_7",
+          "type": "lift",
+          "distance_m": 4,
+          "turns": 1,
+          "note": "single lift shaft serving all floors (placeholder travel distance)"
+        },
+        {
+          "from": "STAIRS_6",
+          "to": "STAIRS_7",
+          "type": "stairs",
+          "distance_m": 4.5,
+          "turns": 2,
+          "note": "stair flight between floors (placeholder travel distance)"
+        },
+        {
+          "from": "LIFT_7",
+          "to": "LIFT_8",
+          "type": "lift",
+          "distance_m": 4,
+          "turns": 1,
+          "note": "single lift shaft serving all floors (placeholder travel distance)"
+        },
+        {
+          "from": "STAIRS_7",
+          "to": "STAIRS_8",
+          "type": "stairs",
+          "distance_m": 4.5,
+          "turns": 2,
+          "note": "stair flight between floors (placeholder travel distance)"
+        }
+      ]
+    }
+  ]
+}
